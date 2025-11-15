@@ -1,0 +1,7 @@
+{
+      "user_not_found": "User not found",
+      "invalid_otp": "Invalid OTP",
+      "otp_sent_email": "OTP sent to email",
+      "otp_sent_phone": "OTP sent to phone number",
+      "user_already_exists": "User already exists"
+}

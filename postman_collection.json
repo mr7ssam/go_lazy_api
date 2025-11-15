@@ -1,0 +1,546 @@
+{
+	"info": {
+		"_postman_id": "go-lazy-api-collection",
+		"name": "Go Lazy API - JWT Authentication",
+		"description": "Complete API collection for Go Lazy API with JWT authentication endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": "Simple health check endpoint to verify the API is running"
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    pm.collectionVariables.set('user_email', pm.request.body.raw ? JSON.parse(pm.request.body.raw).email : '');",
+									"    pm.collectionVariables.set('user_phone', pm.request.body.raw ? JSON.parse(pm.request.body.raw).phoneNumber : '');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"phoneNumber\": \"+1234567890\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"create"
+							]
+						},
+						"description": "Create a new user account. This will trigger OTP sending for verification."
+					},
+					"response": []
+				},
+				{
+					"name": "Login with Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('access_token', jsonData.access_token);",
+									"    pm.collectionVariables.set('refresh_token', jsonData.refresh_token);",
+									"    console.log('Access Token:', jsonData.access_token);",
+									"    console.log('Refresh Token:', jsonData.refresh_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						},
+						"description": "Login with email and OTP. Returns access_token and refresh_token.\n\nThe tokens are automatically saved to collection variables for use in protected endpoints."
+					},
+					"response": []
+				},
+				{
+					"name": "Login with Phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('access_token', jsonData.access_token);",
+									"    pm.collectionVariables.set('refresh_token', jsonData.refresh_token);",
+									"    console.log('Access Token:', jsonData.access_token);",
+									"    console.log('Refresh Token:', jsonData.refresh_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phoneNumber\": \"+1234567890\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						},
+						"description": "Login with phone number and OTP. Returns access_token and refresh_token.\n\nThe tokens are automatically saved to collection variables for use in protected endpoints."
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.collectionVariables.set('access_token', jsonData.access_token);",
+									"    pm.collectionVariables.set('refresh_token', jsonData.refresh_token);",
+									"    console.log('New Access Token:', jsonData.access_token);",
+									"    console.log('New Refresh Token:', jsonData.refresh_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user/refresh_token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"refresh_token"
+							]
+						},
+						"description": "Use refresh token to get new access and refresh tokens.\n\nThis endpoint is used when the access token expires (default: 15 minutes).\nThe new tokens are automatically saved to collection variables."
+					},
+					"response": []
+				},
+				{
+					"name": "Request OTP (Email)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user/otp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"otp"
+							]
+						},
+						"description": "Request OTP code to be sent to the user's email address.\n\nReturns:\n- message: Confirmation message\n- expiresAt: OTP expiration timestamp"
+					},
+					"response": []
+				},
+				{
+					"name": "Request OTP (Phone)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"phoneNumber\": \"+1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user/otp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"otp"
+							]
+						},
+						"description": "Request OTP code to be sent to the user's phone number.\n\nReturns:\n- message: Confirmation message\n- expiresAt: OTP expiration timestamp"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						},
+						"description": "Get authenticated user's profile information.\n\n**Protected Route** - Requires valid JWT access token in Authorization header.\n\nReturns:\n- id\n- firstName\n- lastName\n- email\n- phoneNumber\n- isEmailVerified\n- isPhoneVerified"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Profile Photo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/user/upload_image",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"upload_image"
+							]
+						},
+						"description": "Upload user profile photo.\n\n**Protected Route** - Requires valid JWT access token in Authorization header.\n\nRequest:\n- image: Image file (form-data)\n\nReturns:\n- photoUrl: URL of the uploaded photo"
+					},
+					"response": []
+				}
+			],
+			"description": "User management endpoints including authentication and profile"
+		},
+		{
+			"name": "Examples",
+			"item": [
+				{
+					"name": "Full Authentication Flow",
+					"item": [
+						{
+							"name": "Step 1 - Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"demo@example.com\",\n  \"phoneNumber\": \"+9876543210\",\n  \"firstName\": \"Demo\",\n  \"lastName\": \"User\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user/create",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 2 - Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code === 200) {",
+											"    const jsonData = pm.response.json();",
+											"    pm.collectionVariables.set('access_token', jsonData.access_token);",
+											"    pm.collectionVariables.set('refresh_token', jsonData.refresh_token);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"demo@example.com\",\n  \"otp\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 3 - Access Protected Resource",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/profile",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Step 4 - Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code === 200) {",
+											"    const jsonData = pm.response.json();",
+											"    pm.collectionVariables.set('access_token', jsonData.access_token);",
+											"    pm.collectionVariables.set('refresh_token', jsonData.refresh_token);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/user/refresh_token",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"refresh_token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Complete flow showing user creation, login, accessing protected resources, and token refresh"
+				}
+			],
+			"description": "Example flows and test scenarios"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_email",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_phone",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
