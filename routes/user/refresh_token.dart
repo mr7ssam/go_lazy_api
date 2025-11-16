@@ -11,5 +11,7 @@ Future<Response> onRequest(RequestContext context) async {
   final request = RefreshTokenRequest.fromJson(body);
   final handler = context.read<RefreshTokenHandler>();
 
-  return handler.handle(request);
+  final result = await handler.handle(request);
+
+  return result.toResponse();
 }

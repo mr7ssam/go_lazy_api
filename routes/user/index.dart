@@ -8,7 +8,9 @@ Future<Response> onRequest(RequestContext context) async {
 
     final handler = context.read<GetUserHandler>();
 
-    return handler.handle(user);
+    final result = await handler.handle(user);
+
+    return result.toResponse();
   }
 
   return Response(statusCode: 405);

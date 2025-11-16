@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:common/src/handler/handler_result.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -56,7 +57,7 @@ void main() {
       );
       when(() => context.read<CreateUserHandler>()).thenReturn(handler);
       when(() => handler.handle(any())).thenAnswer(
-        (_) async => Response(statusCode: HttpStatus.created),
+        (_) async => const HandlerResult<void>.success(data: null),
       );
 
       final response = await route.onRequest(context);

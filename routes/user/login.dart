@@ -11,5 +11,7 @@ Future<Response> onRequest(RequestContext context) async {
   final body = await context.request.json() as Map<String, dynamic>;
   final request = LoginRequest.fromJson(body);
 
-  return handler.handle(request);
+  final result = await handler.handle(request);
+
+  return result.toResponse();
 }

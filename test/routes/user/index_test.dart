@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:common/src/handler/handler_result.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -39,14 +40,27 @@ void main() {
       when(() => context.read<GetUserHandler>()).thenReturn(handler);
       when<User>(() => context.read<User>()).thenReturn(user);
       when(() => handler.handle(user)).thenAnswer(
-        (_) async => Response.json(body: {'id': user.id}),
+        (_) async => HandlerResult<GetUserResponse>.success(
+          data: GetUserResponse(
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            isEmailVerified: user.isEmailVerified,
+            isPhoneVerified: user.isPhoneVerified,
+          ),
+        ),
       );
 
       final response = await route.onRequest(context);
 
       expect(response.statusCode, equals(HttpStatus.ok));
       final body = json.decode(await response.body()) as Map<String, dynamic>;
-      expect(body, equals({'id': user.id}));
+      expect(body['id'], equals(user.id));
+      expect(body['firstName'], equals(user.firstName));
+      expect(body['lastName'], equals(user.lastName));
+      expect(body['email'], equals(user.email));
     });
 
     test('returns 405 for non-GET methods', () async {

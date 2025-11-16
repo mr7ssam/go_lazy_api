@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:common/src/handler/handler_result.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -48,7 +49,12 @@ void main() {
       );
       when(() => context.read<RequestOtpHandler>()).thenReturn(handler);
       when(() => handler.handle(any())).thenAnswer(
-        (_) async => Response.json(body: {'message': 'sent'}),
+        (_) async => HandlerResult<RequestOtpResponse>.success(
+          data: RequestOtpResponse(
+            message: 'sent',
+            expiresAt: DateTime.now().add(const Duration(minutes: 5)),
+          ),
+        ),
       );
 
       final response = await route.onRequest(context);

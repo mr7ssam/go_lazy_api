@@ -212,8 +212,8 @@ extension HandlerResultPatterns<T> on HandlerResult<T> {
 
 /// @nodoc
 
-class _Success<T> implements HandlerResult<T> {
-  const _Success({required this.data});
+class _Success<T> extends HandlerResult<T> {
+  const _Success({required this.data}) : super._();
 
   final T data;
 
@@ -276,8 +276,8 @@ class __$SuccessCopyWithImpl<T, $Res> implements _$SuccessCopyWith<T, $Res> {
 
 /// @nodoc
 
-class _Failed<T> implements HandlerResult<T> {
-  const _Failed({required this.error});
+class _Failed<T> extends HandlerResult<T> {
+  const _Failed({required this.error}) : super._();
 
   final BaseError error;
 

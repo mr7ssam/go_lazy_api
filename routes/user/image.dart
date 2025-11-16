@@ -18,9 +18,7 @@ Future<Response> onRequest(RequestContext context) async {
     user: user,
   );
 
-  final response = await handler.handle(request);
+  final result = await handler.handle(request);
 
-  return Response.json(
-    body: response.toJson(),
-  );
+  return result.toResponse();
 }

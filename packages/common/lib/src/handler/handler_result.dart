@@ -10,7 +10,9 @@ part 'handler_result.freezed.dart';
 /// - [HandlerResult.success] with response data of type [T]
 /// - [HandlerResult.failed] with a [BaseError]
 @freezed
-class HandlerResult<T> with _$HandlerResult<T> {
+abstract class HandlerResult<T> with _$HandlerResult<T> {
+  const HandlerResult._();
+
   const factory HandlerResult.success({
     required T data,
   }) = _Success<T>;

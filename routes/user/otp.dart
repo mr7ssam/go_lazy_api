@@ -11,5 +11,7 @@ Future<Response> onRequest(RequestContext context) async {
   final request = RequestOtpRequest.fromJson(body);
   final handler = context.read<RequestOtpHandler>();
 
-  return handler.handle(request);
+  final result = await handler.handle(request);
+
+  return result.toResponse();
 }

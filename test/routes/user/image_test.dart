@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:common/src/handler/handler_result.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -75,8 +76,10 @@ void main() {
       when(() => context.read<User>()).thenReturn(user);
       when(() => context.read<UploadUserPhotoHandler>()).thenReturn(handler);
       when(() => handler.handle(any())).thenAnswer(
-        (_) async => UploadUserPhotoResponse(
-          photoUrl: 'https://example.com/avatar.png',
+        (_) async => HandlerResult<UploadUserPhotoResponse>.success(
+          data: UploadUserPhotoResponse(
+            photoUrl: 'https://example.com/avatar.png',
+          ),
         ),
       );
 

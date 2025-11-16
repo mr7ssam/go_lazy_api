@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:common/src/handler/handler_result.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -49,7 +50,12 @@ void main() {
       );
       when(() => context.read<LoginHandler>()).thenReturn(handler);
       when(() => handler.handle(any())).thenAnswer(
-        (_) async => Response.json(body: {'status': 'ok'}),
+        (_) async => HandlerResult<LoginResponse>.success(
+          data: LoginResponse(
+            accessToken: 'access-token',
+            refreshToken: 'refresh-token',
+          ),
+        ),
       );
 
       final response = await route.onRequest(context);
