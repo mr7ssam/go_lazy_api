@@ -132,8 +132,10 @@ void main() {
         failed: (error) {
           expect(error, isA<ConflictError>());
           expect(error.statusCode, equals(409));
-          expect(error.message,
-              equals(localization.translations.userAlreadyExists));
+          expect(
+            error.message,
+            equals(localization.translations.userAlreadyExists),
+          );
         },
       );
       verify(() => transactionManager.runInTransaction(any())).called(1);

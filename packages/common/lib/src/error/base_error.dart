@@ -1,6 +1,7 @@
 /// Base class for all application errors.
 ///
-/// Each error contains a [message] describing the error and an HTTP [statusCode].
+/// Each error contains a [message] describing the error
+/// and an HTTP [statusCode].
 abstract class BaseError {
   const BaseError({
     required this.message,

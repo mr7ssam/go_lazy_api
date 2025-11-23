@@ -1,7 +1,0 @@
-name: go_lazy_api
-repository: https://github.com/yourusername/go_lazy_api
-
-packages:
-  - packages/**
-  - features/**
-

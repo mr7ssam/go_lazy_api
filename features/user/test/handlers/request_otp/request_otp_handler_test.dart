@@ -116,7 +116,9 @@ void main() {
       result.when(
         success: (response) {
           expect(
-              response.message, equals(localization.translations.otpSentEmail));
+            response.message,
+            equals(localization.translations.otpSentEmail),
+          );
           expect(response.expiresAt, equals(createdOtp.expiresAt));
         },
         failed: (error) => fail('Expected success but got error: $error'),
@@ -160,7 +162,9 @@ void main() {
       result.when(
         success: (response) {
           expect(
-              response.message, equals(localization.translations.otpSentPhone));
+            response.message,
+            equals(localization.translations.otpSentPhone),
+          );
           expect(response.expiresAt, equals(createdOtp.expiresAt));
         },
         failed: (error) => fail('Expected success but got error: $error'),

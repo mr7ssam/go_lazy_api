@@ -1,6 +1,7 @@
 {
       "cSpell.words": [
-            "otps"
+        "dotenv",
+        "otps"
       ],
   "[dart]": {
     "editor.codeActionsOnSave": {

@@ -17,6 +17,7 @@ dependencies:
   database:
     path: ../../packages/database
   drift: ^2.4.0
+  mocktail: ^1.0.3
   postgres: ^3.5.9
   uuid: ^4.5.1
 
