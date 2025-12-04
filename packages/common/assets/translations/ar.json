@@ -3,5 +3,11 @@
       "invalid_otp": "رمز التحقق غير صحيح",
       "otp_sent_email": "تم إرسال رمز التحقق إلى البريد الإلكتروني",
       "otp_sent_phone": "تم إرسال رمز التحقق إلى رقم الهاتف",
-      "user_already_exists": "المستخدم موجود بالفعل"
+      "user_already_exists": "المستخدم موجود بالفعل",
+      "group_not_found": "المجموعة غير موجودة",
+      "group_already_exists": "المجموعة موجودة بالفعل",
+      "not_group_member": "أنت لست عضوًا في هذه المجموعة",
+      "insufficient_permissions": "صلاحيات غير كافية",
+      "cannot_remove_owner": "لا يمكن إزالة مالك المجموعة",
+      "internal_server_error": "خطأ داخلي في الخادم"
 }

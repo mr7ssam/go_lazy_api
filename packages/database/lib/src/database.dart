@@ -11,7 +11,16 @@ import 'package:uuid/uuid.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [UserTable, UserOtpTable], daos: [UsersDao])
+@DriftDatabase(
+  tables: [
+    UserTable,
+    UserOtpTable,
+    GroupsTable,
+    GroupMembersTable,
+    GroupInvitesTable,
+  ],
+  daos: [UsersDao, GroupsDao],
+)
 class Database extends _$Database {
   Database([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
@@ -48,6 +57,9 @@ extension DatabaseUse on Handler {
     )
         .use(
           UsersDao.middlewareProvider(),
+        )
+        .use(
+          GroupsDao.middlewareProvider(),
         )
         .use(
           Database.middlewareProvider(),

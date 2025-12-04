@@ -3,5 +3,11 @@
       "invalid_otp": "Invalid OTP",
       "otp_sent_email": "OTP sent to email",
       "otp_sent_phone": "OTP sent to phone number",
-      "user_already_exists": "User already exists"
+      "user_already_exists": "User already exists",
+      "group_not_found": "Group not found",
+      "group_already_exists": "Group already exists",
+      "not_group_member": "You are not a member of this group",
+      "insufficient_permissions": "Insufficient permissions",
+      "cannot_remove_owner": "Cannot remove the group owner",
+      "internal_server_error": "Internal server error"
 }

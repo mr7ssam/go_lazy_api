@@ -6,11 +6,59 @@ class Translations {
 
   final String locale;
 
+  String get cannotRemoveOwner {
+    switch (locale) {
+      case 'en': return 'Cannot remove the group owner';
+      case 'ar': return 'لا يمكن إزالة مالك المجموعة';
+      default: return 'cannot_remove_owner';
+    }
+  }
+
+  String get groupAlreadyExists {
+    switch (locale) {
+      case 'en': return 'Group already exists';
+      case 'ar': return 'المجموعة موجودة بالفعل';
+      default: return 'group_already_exists';
+    }
+  }
+
+  String get groupNotFound {
+    switch (locale) {
+      case 'en': return 'Group not found';
+      case 'ar': return 'المجموعة غير موجودة';
+      default: return 'group_not_found';
+    }
+  }
+
+  String get insufficientPermissions {
+    switch (locale) {
+      case 'en': return 'Insufficient permissions';
+      case 'ar': return 'صلاحيات غير كافية';
+      default: return 'insufficient_permissions';
+    }
+  }
+
+  String get internalServerError {
+    switch (locale) {
+      case 'en': return 'Internal server error';
+      case 'ar': return 'خطأ داخلي في الخادم';
+      default: return 'internal_server_error';
+    }
+  }
+
   String get invalidOtp {
     switch (locale) {
       case 'en': return 'Invalid OTP';
       case 'ar': return 'رمز التحقق غير صحيح';
       default: return 'invalid_otp';
+    }
+  }
+
+  String get notGroupMember {
+    switch (locale) {
+      case 'en': return 'You are not a member of this group';
+      case 'ar': return 'أنت لست عضوًا في هذه المجموعة';
+      default: return 'not_group_member';
     }
   }
 
