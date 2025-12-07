@@ -3,7 +3,7 @@ import 'package:database/database.dart';
 import 'package:drift/native.dart';
 import 'package:test/test.dart';
 import 'package:user/user_data.dart';
-import 'package:user/user_domain.dart';
+import 'package:user/user_domain.dart' hide IUsersRepo;
 
 void main() {
   late UsersRepoTestContext context;
@@ -42,11 +42,10 @@ void main() {
       expect(created.email, user.email);
       expect(created.firstName, user.firstName);
 
-      final stored = await (context.usersDao.select(context.usersDao.userTable)
-            ..where((tbl) => tbl.id.equals(user.id)))
-          .getSingle();
+      final stored = await context.usersRepo.getUserById(created.id);
 
-      expect(stored.email, user.email);
+      expect(stored, isNotNull);
+      expect(stored!.email, user.email);
       expect(stored.firstName, user.firstName);
       expect(stored.lastName, user.lastName);
     });
@@ -226,13 +225,11 @@ void main() {
 class UsersRepoTestContext {
   UsersRepoTestContext._({
     required this.database,
-    required this.usersDao,
     required this.usersRepo,
     required this.jwtService,
   });
 
   final Database database;
-  final UsersDao usersDao;
   final UsersRepo usersRepo;
   final JwtService jwtService;
 
@@ -244,6 +241,7 @@ class UsersRepoTestContext {
       accessTokenSecret: 'access-secret',
       refreshTokenSecret: 'refresh-secret',
     );
+
     final usersRepo = UsersRepo(
       usersDao: usersDao,
       jwtService: jwtService,
@@ -255,7 +253,6 @@ class UsersRepoTestContext {
 
     return UsersRepoTestContext._(
       database: database,
-      usersDao: usersDao,
       usersRepo: usersRepo,
       jwtService: jwtService,
     );

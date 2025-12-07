@@ -21,5 +21,61 @@ Handler middleware(Handler handler) {
             localization: context.read(),
           ),
         ),
+      )
+      .use(
+        provider<GetGroupHandler>(
+          (context) => GetGroupHandler(
+            groupsRepo: context.read(),
+            localization: context.read(),
+          ),
+        ),
+      )
+      .use(
+        provider<UpdateGroupHandler>(
+          (context) => UpdateGroupHandler(
+            groupsRepo: context.read(),
+            localization: context.read(),
+          ),
+        ),
+      )
+      .use(
+        provider<DeleteGroupHandler>(
+          (context) => DeleteGroupHandler(
+            groupsRepo: context.read(),
+            localization: context.read(),
+          ),
+        ),
+      )
+      .use(
+        provider<GetGroupMembersHandler>(
+          (context) => GetGroupMembersHandler(
+            groupsRepo: context.read(),
+            localization: context.read(),
+          ),
+        ),
+      )
+      .use(
+        provider<AddMemberHandler>(
+          (context) => AddMemberHandler(
+            groupsRepo: context.read(),
+            localization: context.read(),
+          ),
+        ),
+      )
+      .use(
+        provider<RemoveMemberHandler>(
+          (context) => RemoveMemberHandler(
+            groupsRepo: context.read(),
+            localization: context.read(),
+          ),
+        ),
+      )
+      .use(
+        provider<UpdateMemberRoleHandler>(
+          (context) => UpdateMemberRoleHandler(
+            groupsRepo: context.read(),
+            localization: context.read(),
+          ),
+        ),
       );
 }

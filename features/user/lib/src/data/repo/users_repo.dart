@@ -126,7 +126,7 @@ class UsersRepo implements IUsersRepo {
   static UsersRepo? _usersRepo;
 
   static Middleware middlewareProvider() {
-    return provider<IUsersRepo>(
+    return provider<UsersRepo>(
       (context) {
         return _usersRepo ??= UsersRepo(
           usersDao: context.read<UsersDao>(),
