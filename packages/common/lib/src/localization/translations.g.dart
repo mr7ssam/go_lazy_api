@@ -6,6 +6,22 @@ class Translations {
 
   final String locale;
 
+  String get accessDenied {
+    switch (locale) {
+      case 'en': return 'Access denied';
+      case 'ar': return 'تم رفض الوصول';
+      default: return 'access_denied';
+    }
+  }
+
+  String get cannotMakeSharedTaskPrivate {
+    switch (locale) {
+      case 'en': return 'Cannot make shared task private after it has been shared with participants';
+      case 'ar': return 'لا يمكن جعل المهمة المشتركة خاصة بعد مشاركتها مع المشاركين';
+      default: return 'cannot_make_shared_task_private';
+    }
+  }
+
   String get cannotRemoveOwner {
     switch (locale) {
       case 'en': return 'Cannot remove the group owner';
@@ -41,7 +57,7 @@ class Translations {
   String get internalServerError {
     switch (locale) {
       case 'en': return 'Internal server error';
-      case 'ar': return 'خطأ داخلي في الخادم';
+      case 'ar': return 'خطأ في الخادم الداخلي';
       default: return 'internal_server_error';
     }
   }
@@ -54,10 +70,26 @@ class Translations {
     }
   }
 
+  String get mustBeParticipantToCreate {
+    switch (locale) {
+      case 'en': return 'You must be a participant to create tasks';
+      case 'ar': return 'يجب أن تكون مشاركاً لإنشاء المهام';
+      default: return 'must_be_participant_to_create';
+    }
+  }
+
+  String get mustBeParticipantToView {
+    switch (locale) {
+      case 'en': return 'You must be a participant to view tasks';
+      case 'ar': return 'يجب أن تكون مشاركاً لعرض المهام';
+      default: return 'must_be_participant_to_view';
+    }
+  }
+
   String get notGroupMember {
     switch (locale) {
       case 'en': return 'You are not a member of this group';
-      case 'ar': return 'أنت لست عضوًا في هذه المجموعة';
+      case 'ar': return 'أنت لست عضواً في هذه المجموعة';
       default: return 'not_group_member';
     }
   }
@@ -75,6 +107,14 @@ class Translations {
       case 'en': return 'OTP sent to phone number';
       case 'ar': return 'تم إرسال رمز التحقق إلى رقم الهاتف';
       default: return 'otp_sent_phone';
+    }
+  }
+
+  String get taskNotFound {
+    switch (locale) {
+      case 'en': return 'Task not found';
+      case 'ar': return 'المهمة غير موجودة';
+      default: return 'task_not_found';
     }
   }
 

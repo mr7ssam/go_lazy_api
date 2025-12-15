@@ -6,8 +6,13 @@
       "user_already_exists": "المستخدم موجود بالفعل",
       "group_not_found": "المجموعة غير موجودة",
       "group_already_exists": "المجموعة موجودة بالفعل",
-      "not_group_member": "أنت لست عضوًا في هذه المجموعة",
+      "not_group_member": "أنت لست عضواً في هذه المجموعة",
       "insufficient_permissions": "صلاحيات غير كافية",
       "cannot_remove_owner": "لا يمكن إزالة مالك المجموعة",
-      "internal_server_error": "خطأ داخلي في الخادم"
+      "internal_server_error": "خطأ في الخادم الداخلي",
+      "task_not_found": "المهمة غير موجودة",
+      "access_denied": "تم رفض الوصول",
+      "must_be_participant_to_create": "يجب أن تكون مشاركاً لإنشاء المهام",
+      "must_be_participant_to_view": "يجب أن تكون مشاركاً لعرض المهام",
+      "cannot_make_shared_task_private": "لا يمكن جعل المهمة المشتركة خاصة بعد مشاركتها مع المشاركين"
 }

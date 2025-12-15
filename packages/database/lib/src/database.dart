@@ -5,6 +5,7 @@ import 'package:database/database.dart';
 import 'package:database/src/tables/index.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_postgres/drift_postgres.dart';
+import 'package:go/go_domain.dart';
 import 'package:postgres/postgres.dart' as pg;
 import 'package:user/user_domain.dart';
 import 'package:uuid/uuid.dart';
@@ -18,8 +19,12 @@ part 'database.g.dart';
     GroupsTable,
     GroupMembersTable,
     GroupInvitesTable,
+    GoLocationsTable,
+    GoEventsTable,
+    GoParticipantsTable,
+    GoTasksTable,
   ],
-  daos: [UsersDao, GroupsDao],
+  daos: [UsersDao, GroupsDao, GoDao],
 )
 class Database extends _$Database {
   Database([QueryExecutor? executor]) : super(executor ?? _openConnection());

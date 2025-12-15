@@ -9,5 +9,10 @@
       "not_group_member": "You are not a member of this group",
       "insufficient_permissions": "Insufficient permissions",
       "cannot_remove_owner": "Cannot remove the group owner",
-      "internal_server_error": "Internal server error"
+      "internal_server_error": "Internal server error",
+      "task_not_found": "Task not found",
+      "access_denied": "Access denied",
+      "must_be_participant_to_create": "You must be a participant to create tasks",
+      "must_be_participant_to_view": "You must be a participant to view tasks",
+      "cannot_make_shared_task_private": "Cannot make shared task private after it has been shared with participants"
 }
