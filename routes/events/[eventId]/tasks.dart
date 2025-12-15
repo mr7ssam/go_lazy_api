@@ -29,9 +29,12 @@ Future<Response> _createTask(RequestContext context, String eventId) async {
   final userId = context.user!.id;
 
   final json = await context.request.json() as Map<String, dynamic>;
-  final request = CreateTaskRequest.fromJson(json).copyWith(
-    eventId: eventId,
-    userId: userId,
+  final request = CreateTaskRequest.fromJson(
+    {
+      ...json,
+      'createdBy': userId,
+      'eventId': eventId,
+    },
   );
 
   final result = await handler.handle(request);

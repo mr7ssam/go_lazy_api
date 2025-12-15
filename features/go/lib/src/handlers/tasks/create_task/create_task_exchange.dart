@@ -5,8 +5,6 @@ class CreateTaskRequest {
     required this.createdBy,
     this.description,
     this.deadline,
-    this.isPrivate = false,
-    this.userId,
   });
 
   factory CreateTaskRequest.fromJson(Map<String, dynamic> json) =>
@@ -18,7 +16,6 @@ class CreateTaskRequest {
         deadline: json['deadline'] != null
             ? DateTime.parse(json['deadline'] as String)
             : null,
-        isPrivate: json['isPrivate'] as bool? ?? false,
       );
 
   final String eventId;
@@ -26,8 +23,6 @@ class CreateTaskRequest {
   final String? description;
   final DateTime? deadline;
   final String createdBy;
-  final bool isPrivate;
-  final String? userId;
 
   CreateTaskRequest copyWith({
     String? eventId,
@@ -35,8 +30,6 @@ class CreateTaskRequest {
     String? description,
     DateTime? deadline,
     String? createdBy,
-    bool? isPrivate,
-    String? userId,
   }) {
     return CreateTaskRequest(
       eventId: eventId ?? this.eventId,
@@ -44,8 +37,6 @@ class CreateTaskRequest {
       createdBy: createdBy ?? this.createdBy,
       description: description ?? this.description,
       deadline: deadline ?? this.deadline,
-      isPrivate: isPrivate ?? this.isPrivate,
-      userId: userId ?? this.userId,
     );
   }
 }
@@ -58,11 +49,8 @@ class CreateTaskResponse {
     required this.createdBy,
     required this.createdAt,
     required this.isDone,
-    required this.isPrivate,
     this.description,
     this.deadline,
-    this.completedBy,
-    this.updatedBy,
   });
 
   final String id;
@@ -73,9 +61,6 @@ class CreateTaskResponse {
   final String createdBy;
   final DateTime createdAt;
   final bool isDone;
-  final bool isPrivate;
-  final String? completedBy;
-  final String? updatedBy;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -86,8 +71,5 @@ class CreateTaskResponse {
         'createdBy': createdBy,
         'createdAt': createdAt.toIso8601String(),
         'isDone': isDone,
-        'isPrivate': isPrivate,
-        'completedBy': completedBy,
-        'updatedBy': updatedBy,
       };
 }

@@ -25,8 +25,7 @@ class CreateTaskHandler
     CreateTaskRequest request,
   ) async {
     try {
-      // Validate user is participant
-      final userId = request.userId ?? request.createdBy;
+      final userId = request.createdBy;
       final isParticipant = await _participantsRepo.isUserParticipant(
         request.eventId,
         userId,
