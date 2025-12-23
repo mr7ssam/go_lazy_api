@@ -11,9 +11,9 @@
 
 ### Three-Layer Feature Pattern
 
-Each feature (e.g., `features/user/`) has:
+Each feature (e.g., `features/user/`, `features/go/`) has:
 1. **Domain layer** (`user_domain.dart`): Interfaces (`IUsersRepo`) and entities (`User`)
-2. **Data layer** (`user_data.dart`): Implementations (`UsersRepo`, JWT middleware)
+2. **Data layer** (`user_data.dart`): Implementations (`UsersRepo`, transformers, middleware registration)
 3. **Handlers layer** (`user_handlers.dart`): HTTP handlers extending `IHandler<TRequest, TResponse>`
 
 ### Handler Result Pattern
@@ -43,17 +43,35 @@ handler
   .registerUserDataMiddlewares()    // JWT auth + UsersRepo
   .use(provider<JwtService>(...))
   .registerDatabaseMiddlewares()    // DAOs + DB connection
+  .registerGoDataMiddlewares()      // Go feature repos
+  .registerGoHandlersMiddlewares()  // Go feature handlers
 ```
 
-Each feature exports `Handler registerXXXMiddlewares()` for composability (see `features/user/lib/src/data/index.dart`).
+Each feature exports `Handler registerXXXMiddlewares()` for composability:
+- Data layer: `features/<name>/lib/src/data/index.dart` → registers repos
+- Handlers layer: `features/<name>/lib/src/handlers/go_handlers_middleware.dart` → registers handlers
 
 ## Database & ORM (Drift + PostgreSQL)
 
-- **Tables**: `packages/database/lib/src/tables/users_table.dart`
-- **DAOs**: `packages/database/lib/src/daos/user_dao.dart`
+- **Tables**: `packages/database/lib/src/tables/*.dart`
+- **DAOs**: Centralized in `packages/database/lib/src/daos/` (e.g., `GoDao`, `UsersDao`)
+- **Enum columns**: Use `textEnum<EnumType>()` for string-backed enums (see `go_reminders_table.dart`)
+- **Transformers**: Convert between Drift table data and domain entities (e.g., `GoReminderInputTransformer`)
 - **Transactions**: Wrap in `TransactionManager.runInTransaction()` for atomicity
 - **After schema changes**: Run `melos run build_runner:build` to regenerate `*.g.dart` files
 - **Config**: `build.yaml` sets Drift to PostgreSQL dialect
+
+### Enum Pattern
+```dart
+// Table definition
+TextColumn get reminderType => textEnum<GoReminderType>()();
+
+// Domain entity
+enum GoReminderType { timeBeforeEvent, timeBeforeDeadline, specificTime }
+
+// Transformer - no conversion needed, Drift handles it
+GoRemindersTableCompanion(reminderType: Value(reminder.reminderType))
+```
 
 ## Critical Workflows
 
@@ -86,7 +104,7 @@ when(() => handler.handle(any())).thenAnswer(
 
 ## Project-Specific Conventions
 
-1. **Request/Response DTOs**: Co-located with handlers in `*_exchange.dart` (e.g., `create_user_exchange.dart`)
+1. **Request/Response DTOs**: Co-located with handlers in `*_exchange.dart` (e.g., `create_reminder_exchange.dart`)
 
 2. **Error Handling**: Use typed errors from `packages/common/lib/src/error/`:
    - `NotFoundError` (404), `UnauthorizedError` (401), `ConflictError` (409)
@@ -99,7 +117,8 @@ when(() => handler.handle(any())).thenAnswer(
    Access authenticated user: `context.read<User>()` or `context.user`
 
 4. **Localization**: Translations in `packages/common/assets/translations/{en,ar}.json`
-   - Access: `context.read<LocalizationService>().translations.userAlreadyExists`
+   - Access: `context.read<LocalizationService>().translations.goReminderCreated`
+   - After adding keys, run `melos run generate:translations`
 
 5. **Environment Variables**: Required in `.env.dev`/`.env.prod` + `.env.local`:
    - `DATABASE_HOST`, `DATABASE_NAME`, `DATABASE_USER`, `DATABASE_PASSWORD`
@@ -109,16 +128,25 @@ when(() => handler.handle(any())).thenAnswer(
 ## Adding New Features
 
 1. Create `features/<name>/` with 3 layers (domain/data/handlers)
-2. Export middleware extension: `Handler registerXXXMiddlewares()` in `data/index.dart`
-3. Create route files in `routes/<name>/` that read handlers from context
-4. Register in `routes/_middleware.dart` and root `pubspec.yaml`
+2. Define tables in `packages/database/lib/src/tables/<name>_table.dart`
+3. Add tables to `packages/database/lib/src/database.dart` @DriftDatabase annotation
+4. Create DAO or extend existing (e.g., `GoDao` handles all Go-related tables)
+5. Export middleware extensions:
+   - `Handler registerXXXDataMiddlewares()` in `data/index.dart` (repos)
+   - `Handler registerXXXHandlersMiddlewares()` in `handlers/<name>_handlers_middleware.dart` (handlers)
+6. Create route files in `routes/<name>/` that read handlers from context
+7. Register in `routes/_middleware.dart` and root `pubspec.yaml`
+8. Run `melos run build_runner:build` to generate Drift code
 
 ## Common Pitfalls
 
 - **Missing `*.g.dart` files**: Run `melos run build_runner:build` after Drift schema changes
-- **Middleware order**: Database providers must register before DAOs that use them
+- **Middleware order**: Database providers → DAOs → Repos → Handlers (dependency order matters)
 - **Handler test mocks**: Must return `HandlerResult<T>`, not `Response` directly
 - **Singleton services**: `JwtService.fromEnvironment()` and `Database` cache instances—don't recreate
 - **Transaction scope**: DAOs automatically inherit transaction context inside `runInTransaction()`
 - **Import paths**: Use barrel exports (`user_handlers.dart`) not internal paths
- 
+- **Enum storage**: Prefer `textEnum<T>()` over manual string conversion for better type safety
+- **ArgumentError**: Use `e.toString()` not `e.message` when catching ArgumentError
+- **Unused imports**: Remove unused `TransactionManager` in read-only handlers
+- **Trailing commas**: Always add trailing commas to function arguments, parameters, and collections to avoid Dart Frog linter issues
