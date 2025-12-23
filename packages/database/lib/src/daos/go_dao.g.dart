@@ -12,4 +12,6 @@ mixin _$GoDaoMixin on DatabaseAccessor<Database> {
   $GoParticipantsTableTable get goParticipantsTable =>
       attachedDatabase.goParticipantsTable;
   $GoTasksTableTable get goTasksTable => attachedDatabase.goTasksTable;
+  $GoRemindersTableTable get goRemindersTable =>
+      attachedDatabase.goRemindersTable;
 }

@@ -5,6 +5,7 @@ class CreateTaskRequest {
     required this.createdBy,
     this.description,
     this.deadline,
+    this.isPrivate = false,
   });
 
   factory CreateTaskRequest.fromJson(Map<String, dynamic> json) =>
@@ -16,6 +17,7 @@ class CreateTaskRequest {
         deadline: json['deadline'] != null
             ? DateTime.parse(json['deadline'] as String)
             : null,
+        isPrivate: json['isPrivate'] as bool? ?? false,
       );
 
   final String eventId;
@@ -23,6 +25,7 @@ class CreateTaskRequest {
   final String? description;
   final DateTime? deadline;
   final String createdBy;
+  final bool isPrivate;
 
   CreateTaskRequest copyWith({
     String? eventId,
@@ -30,6 +33,7 @@ class CreateTaskRequest {
     String? description,
     DateTime? deadline,
     String? createdBy,
+    bool? isPrivate,
   }) {
     return CreateTaskRequest(
       eventId: eventId ?? this.eventId,
@@ -37,6 +41,7 @@ class CreateTaskRequest {
       createdBy: createdBy ?? this.createdBy,
       description: description ?? this.description,
       deadline: deadline ?? this.deadline,
+      isPrivate: isPrivate ?? this.isPrivate,
     );
   }
 }

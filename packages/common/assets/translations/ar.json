@@ -14,5 +14,11 @@
       "access_denied": "تم رفض الوصول",
       "must_be_participant_to_create": "يجب أن تكون مشاركاً لإنشاء المهام",
       "must_be_participant_to_view": "يجب أن تكون مشاركاً لعرض المهام",
-      "cannot_make_shared_task_private": "لا يمكن جعل المهمة المشتركة خاصة بعد مشاركتها مع المشاركين"
+      "cannot_make_shared_task_private": "لا يمكن جعل المهمة المشتركة خاصة بعد مشاركتها مع المشاركين",
+      "goTaskNotFound": "المهمة غير موجودة",
+      "goTaskNotAssignedToYou": "هذه المهمة غير مخصصة لك",
+      "goReminderCreated": "تم تعيين التذكير",
+      "goReminderUpdated": "تم تحديث التذكير",
+      "goReminderDeleted": "تم حذف التذكير",
+      "goReminderNotFound": "التذكير غير موجود"
 }

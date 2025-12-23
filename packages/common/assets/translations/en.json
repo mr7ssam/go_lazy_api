@@ -14,5 +14,11 @@
       "access_denied": "Access denied",
       "must_be_participant_to_create": "You must be a participant to create tasks",
       "must_be_participant_to_view": "You must be a participant to view tasks",
-      "cannot_make_shared_task_private": "Cannot make shared task private after it has been shared with participants"
+      "cannot_make_shared_task_private": "Cannot make shared task private after it has been shared with participants",
+      "goTaskNotFound": "Task not found",
+      "goTaskNotAssignedToYou": "This task is not assigned to you",
+      "goReminderCreated": "Reminder set",
+      "goReminderUpdated": "Reminder updated",
+      "goReminderDeleted": "Reminder deleted",
+      "goReminderNotFound": "Reminder not found"
 }

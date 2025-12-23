@@ -64,9 +64,6 @@ class CreateTaskHandler
           createdBy: createdTask.createdBy,
           createdAt: createdTask.createdAt,
           isDone: createdTask.isDone,
-          isPrivate: createdTask.isPrivate,
-          completedBy: createdTask.completedBy,
-          updatedBy: createdTask.updatedBy,
         ),
       );
     } on BadRequestError catch (e) {

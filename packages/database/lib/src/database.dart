@@ -22,6 +22,7 @@ part 'database.g.dart';
     GoLocationsTable,
     GoEventsTable,
     GoParticipantsTable,
+    GoRemindersTable,
     GoTasksTable,
   ],
   daos: [UsersDao, GroupsDao, GoDao],

@@ -638,18 +638,18 @@ GoEvent ──┬── has many ──> GoParticipant
 ### Phase 3: Reminders System 🔔
 > Smart notification system
 
-- [ ] Add `go_reminders` table to database
-- [ ] Create `GoReminder` entity
-- [ ] Create `GoReminderType` enum
-- [ ] Create `IGoRemindersRepo` interface
-- [ ] Implement `GoRemindersRepo`
-- [ ] Implement `GoRemindersDao`
-- [ ] Create handlers:
-  - [ ] `CreateReminderHandler`
-  - [ ] `UpdateReminderHandler`
-  - [ ] `DeleteReminderHandler`
-  - [ ] `GetTaskRemindersHandler`
-- [ ] Create routes
+- [x] Add `go_reminders` table to database
+- [x] Create `GoReminder` entity
+- [x] Create `GoReminderType` enum
+- [x] Create `IGoRemindersRepo` interface
+- [x] Implement `GoRemindersRepo`
+- [x] Implement `GoRemindersDao`
+- [x] Create handlers:
+  - [x] `CreateReminderHandler`
+  - [x] `UpdateReminderHandler`
+  - [x] `DeleteReminderHandler`
+  - [x] `GetTaskRemindersHandler`
+- [x] Create routes
 - [ ] Write unit tests
 - [ ] (Future) Implement reminder sending service
 

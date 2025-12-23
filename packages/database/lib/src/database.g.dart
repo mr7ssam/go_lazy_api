@@ -4218,6 +4218,491 @@ class GoTasksTableCompanion extends UpdateCompanion<GoTasksTableData> {
   }
 }
 
+class $GoRemindersTableTable extends GoRemindersTable
+    with TableInfo<$GoRemindersTableTable, GoRemindersTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GoRemindersTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: const Uuid().v4);
+  static const VerificationMeta _taskIdMeta = const VerificationMeta('taskId');
+  @override
+  late final GeneratedColumn<String> taskId = GeneratedColumn<String>(
+      'task_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES go_tasks (id)'));
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES users (id)'));
+  @override
+  late final GeneratedColumnWithTypeConverter<GoReminderType, String>
+      reminderType = GeneratedColumn<String>(
+              'reminder_type', aliasedName, false,
+              type: DriftSqlType.string, requiredDuringInsert: true)
+          .withConverter<GoReminderType>(
+              $GoRemindersTableTable.$converterreminderType);
+  static const VerificationMeta _remindAtMeta =
+      const VerificationMeta('remindAt');
+  @override
+  late final GeneratedColumn<DateTime> remindAt = GeneratedColumn<DateTime>(
+      'remind_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _minutesBeforeMeta =
+      const VerificationMeta('minutesBefore');
+  @override
+  late final GeneratedColumn<int> minutesBefore = GeneratedColumn<int>(
+      'minutes_before', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _isSentMeta = const VerificationMeta('isSent');
+  @override
+  late final GeneratedColumn<bool> isSent = GeneratedColumn<bool>(
+      'is_sent', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL DEFAULT false',
+      defaultValue: const CustomExpression('FALSE'));
+  static const VerificationMeta _sentAtMeta = const VerificationMeta('sentAt');
+  @override
+  late final GeneratedColumn<DateTime> sentAt = GeneratedColumn<DateTime>(
+      'sent_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      clientDefault: DateTime.now().toUtc);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        taskId,
+        userId,
+        reminderType,
+        remindAt,
+        minutesBefore,
+        isSent,
+        sentAt,
+        createdAt
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'go_reminders';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<GoRemindersTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('task_id')) {
+      context.handle(_taskIdMeta,
+          taskId.isAcceptableOrUnknown(data['task_id']!, _taskIdMeta));
+    } else if (isInserting) {
+      context.missing(_taskIdMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('remind_at')) {
+      context.handle(_remindAtMeta,
+          remindAt.isAcceptableOrUnknown(data['remind_at']!, _remindAtMeta));
+    }
+    if (data.containsKey('minutes_before')) {
+      context.handle(
+          _minutesBeforeMeta,
+          minutesBefore.isAcceptableOrUnknown(
+              data['minutes_before']!, _minutesBeforeMeta));
+    }
+    if (data.containsKey('is_sent')) {
+      context.handle(_isSentMeta,
+          isSent.isAcceptableOrUnknown(data['is_sent']!, _isSentMeta));
+    }
+    if (data.containsKey('sent_at')) {
+      context.handle(_sentAtMeta,
+          sentAt.isAcceptableOrUnknown(data['sent_at']!, _sentAtMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  GoRemindersTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GoRemindersTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      taskId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}task_id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      reminderType: $GoRemindersTableTable.$converterreminderType.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}reminder_type'])!),
+      remindAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}remind_at']),
+      minutesBefore: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}minutes_before']),
+      isSent: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_sent'])!,
+      sentAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}sent_at']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $GoRemindersTableTable createAlias(String alias) {
+    return $GoRemindersTableTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<GoReminderType, String, String>
+      $converterreminderType =
+      const EnumNameConverter<GoReminderType>(GoReminderType.values);
+}
+
+class GoRemindersTableData extends DataClass
+    implements Insertable<GoRemindersTableData> {
+  final String id;
+  final String taskId;
+  final String userId;
+  final GoReminderType reminderType;
+  final DateTime? remindAt;
+  final int? minutesBefore;
+  final bool isSent;
+  final DateTime? sentAt;
+  final DateTime createdAt;
+  const GoRemindersTableData(
+      {required this.id,
+      required this.taskId,
+      required this.userId,
+      required this.reminderType,
+      this.remindAt,
+      this.minutesBefore,
+      required this.isSent,
+      this.sentAt,
+      required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['task_id'] = Variable<String>(taskId);
+    map['user_id'] = Variable<String>(userId);
+    {
+      map['reminder_type'] = Variable<String>(
+          $GoRemindersTableTable.$converterreminderType.toSql(reminderType));
+    }
+    if (!nullToAbsent || remindAt != null) {
+      map['remind_at'] = Variable<DateTime>(remindAt);
+    }
+    if (!nullToAbsent || minutesBefore != null) {
+      map['minutes_before'] = Variable<int>(minutesBefore);
+    }
+    map['is_sent'] = Variable<bool>(isSent);
+    if (!nullToAbsent || sentAt != null) {
+      map['sent_at'] = Variable<DateTime>(sentAt);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  GoRemindersTableCompanion toCompanion(bool nullToAbsent) {
+    return GoRemindersTableCompanion(
+      id: Value(id),
+      taskId: Value(taskId),
+      userId: Value(userId),
+      reminderType: Value(reminderType),
+      remindAt: remindAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remindAt),
+      minutesBefore: minutesBefore == null && nullToAbsent
+          ? const Value.absent()
+          : Value(minutesBefore),
+      isSent: Value(isSent),
+      sentAt:
+          sentAt == null && nullToAbsent ? const Value.absent() : Value(sentAt),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory GoRemindersTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GoRemindersTableData(
+      id: serializer.fromJson<String>(json['id']),
+      taskId: serializer.fromJson<String>(json['taskId']),
+      userId: serializer.fromJson<String>(json['userId']),
+      reminderType: $GoRemindersTableTable.$converterreminderType
+          .fromJson(serializer.fromJson<String>(json['reminderType'])),
+      remindAt: serializer.fromJson<DateTime?>(json['remindAt']),
+      minutesBefore: serializer.fromJson<int?>(json['minutesBefore']),
+      isSent: serializer.fromJson<bool>(json['isSent']),
+      sentAt: serializer.fromJson<DateTime?>(json['sentAt']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'taskId': serializer.toJson<String>(taskId),
+      'userId': serializer.toJson<String>(userId),
+      'reminderType': serializer.toJson<String>(
+          $GoRemindersTableTable.$converterreminderType.toJson(reminderType)),
+      'remindAt': serializer.toJson<DateTime?>(remindAt),
+      'minutesBefore': serializer.toJson<int?>(minutesBefore),
+      'isSent': serializer.toJson<bool>(isSent),
+      'sentAt': serializer.toJson<DateTime?>(sentAt),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  GoRemindersTableData copyWith(
+          {String? id,
+          String? taskId,
+          String? userId,
+          GoReminderType? reminderType,
+          Value<DateTime?> remindAt = const Value.absent(),
+          Value<int?> minutesBefore = const Value.absent(),
+          bool? isSent,
+          Value<DateTime?> sentAt = const Value.absent(),
+          DateTime? createdAt}) =>
+      GoRemindersTableData(
+        id: id ?? this.id,
+        taskId: taskId ?? this.taskId,
+        userId: userId ?? this.userId,
+        reminderType: reminderType ?? this.reminderType,
+        remindAt: remindAt.present ? remindAt.value : this.remindAt,
+        minutesBefore:
+            minutesBefore.present ? minutesBefore.value : this.minutesBefore,
+        isSent: isSent ?? this.isSent,
+        sentAt: sentAt.present ? sentAt.value : this.sentAt,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  GoRemindersTableData copyWithCompanion(GoRemindersTableCompanion data) {
+    return GoRemindersTableData(
+      id: data.id.present ? data.id.value : this.id,
+      taskId: data.taskId.present ? data.taskId.value : this.taskId,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      reminderType: data.reminderType.present
+          ? data.reminderType.value
+          : this.reminderType,
+      remindAt: data.remindAt.present ? data.remindAt.value : this.remindAt,
+      minutesBefore: data.minutesBefore.present
+          ? data.minutesBefore.value
+          : this.minutesBefore,
+      isSent: data.isSent.present ? data.isSent.value : this.isSent,
+      sentAt: data.sentAt.present ? data.sentAt.value : this.sentAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GoRemindersTableData(')
+          ..write('id: $id, ')
+          ..write('taskId: $taskId, ')
+          ..write('userId: $userId, ')
+          ..write('reminderType: $reminderType, ')
+          ..write('remindAt: $remindAt, ')
+          ..write('minutesBefore: $minutesBefore, ')
+          ..write('isSent: $isSent, ')
+          ..write('sentAt: $sentAt, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, taskId, userId, reminderType, remindAt,
+      minutesBefore, isSent, sentAt, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GoRemindersTableData &&
+          other.id == this.id &&
+          other.taskId == this.taskId &&
+          other.userId == this.userId &&
+          other.reminderType == this.reminderType &&
+          other.remindAt == this.remindAt &&
+          other.minutesBefore == this.minutesBefore &&
+          other.isSent == this.isSent &&
+          other.sentAt == this.sentAt &&
+          other.createdAt == this.createdAt);
+}
+
+class GoRemindersTableCompanion extends UpdateCompanion<GoRemindersTableData> {
+  final Value<String> id;
+  final Value<String> taskId;
+  final Value<String> userId;
+  final Value<GoReminderType> reminderType;
+  final Value<DateTime?> remindAt;
+  final Value<int?> minutesBefore;
+  final Value<bool> isSent;
+  final Value<DateTime?> sentAt;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const GoRemindersTableCompanion({
+    this.id = const Value.absent(),
+    this.taskId = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.reminderType = const Value.absent(),
+    this.remindAt = const Value.absent(),
+    this.minutesBefore = const Value.absent(),
+    this.isSent = const Value.absent(),
+    this.sentAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GoRemindersTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String taskId,
+    required String userId,
+    required GoReminderType reminderType,
+    this.remindAt = const Value.absent(),
+    this.minutesBefore = const Value.absent(),
+    this.isSent = const Value.absent(),
+    this.sentAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : taskId = Value(taskId),
+        userId = Value(userId),
+        reminderType = Value(reminderType);
+  static Insertable<GoRemindersTableData> custom({
+    Expression<String>? id,
+    Expression<String>? taskId,
+    Expression<String>? userId,
+    Expression<String>? reminderType,
+    Expression<DateTime>? remindAt,
+    Expression<int>? minutesBefore,
+    Expression<bool>? isSent,
+    Expression<DateTime>? sentAt,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (taskId != null) 'task_id': taskId,
+      if (userId != null) 'user_id': userId,
+      if (reminderType != null) 'reminder_type': reminderType,
+      if (remindAt != null) 'remind_at': remindAt,
+      if (minutesBefore != null) 'minutes_before': minutesBefore,
+      if (isSent != null) 'is_sent': isSent,
+      if (sentAt != null) 'sent_at': sentAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GoRemindersTableCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? taskId,
+      Value<String>? userId,
+      Value<GoReminderType>? reminderType,
+      Value<DateTime?>? remindAt,
+      Value<int?>? minutesBefore,
+      Value<bool>? isSent,
+      Value<DateTime?>? sentAt,
+      Value<DateTime>? createdAt,
+      Value<int>? rowid}) {
+    return GoRemindersTableCompanion(
+      id: id ?? this.id,
+      taskId: taskId ?? this.taskId,
+      userId: userId ?? this.userId,
+      reminderType: reminderType ?? this.reminderType,
+      remindAt: remindAt ?? this.remindAt,
+      minutesBefore: minutesBefore ?? this.minutesBefore,
+      isSent: isSent ?? this.isSent,
+      sentAt: sentAt ?? this.sentAt,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (taskId.present) {
+      map['task_id'] = Variable<String>(taskId.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (reminderType.present) {
+      map['reminder_type'] = Variable<String>($GoRemindersTableTable
+          .$converterreminderType
+          .toSql(reminderType.value));
+    }
+    if (remindAt.present) {
+      map['remind_at'] = Variable<DateTime>(remindAt.value);
+    }
+    if (minutesBefore.present) {
+      map['minutes_before'] = Variable<int>(minutesBefore.value);
+    }
+    if (isSent.present) {
+      map['is_sent'] = Variable<bool>(isSent.value);
+    }
+    if (sentAt.present) {
+      map['sent_at'] = Variable<DateTime>(sentAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GoRemindersTableCompanion(')
+          ..write('id: $id, ')
+          ..write('taskId: $taskId, ')
+          ..write('userId: $userId, ')
+          ..write('reminderType: $reminderType, ')
+          ..write('remindAt: $remindAt, ')
+          ..write('minutesBefore: $minutesBefore, ')
+          ..write('isSent: $isSent, ')
+          ..write('sentAt: $sentAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
@@ -4234,8 +4719,16 @@ abstract class _$Database extends GeneratedDatabase {
   late final $GoParticipantsTableTable goParticipantsTable =
       $GoParticipantsTableTable(this);
   late final $GoTasksTableTable goTasksTable = $GoTasksTableTable(this);
+  late final $GoRemindersTableTable goRemindersTable =
+      $GoRemindersTableTable(this);
   late final Index idxGoParticipantsLookup = Index('idx_go_participants_lookup',
       'CREATE INDEX idx_go_participants_lookup ON go_participants (event_id, user_id)');
+  late final Index idxGoRemindersTask = Index('idx_go_reminders_task',
+      'CREATE INDEX idx_go_reminders_task ON go_reminders (task_id)');
+  late final Index idxGoRemindersUser = Index('idx_go_reminders_user',
+      'CREATE INDEX idx_go_reminders_user ON go_reminders (user_id)');
+  late final Index idxGoRemindersRemindAt = Index('idx_go_reminders_remind_at',
+      'CREATE INDEX idx_go_reminders_remind_at ON go_reminders (remind_at)');
   late final Index idxGoTasksEventPrivacy = Index('idx_go_tasks_event_privacy',
       'CREATE INDEX idx_go_tasks_event_privacy ON go_tasks (event_id, is_private)');
   late final UsersDao usersDao = UsersDao(this as Database);
@@ -4255,7 +4748,11 @@ abstract class _$Database extends GeneratedDatabase {
         goEventsTable,
         goParticipantsTable,
         goTasksTable,
+        goRemindersTable,
         idxGoParticipantsLookup,
+        idxGoRemindersTask,
+        idxGoRemindersUser,
+        idxGoRemindersRemindAt,
         idxGoTasksEventPrivacy
       ];
 }
@@ -4363,6 +4860,23 @@ final class $$UserTableTableReferences
         .filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_goEventsTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$GoRemindersTableTable, List<GoRemindersTableData>>
+      _goRemindersTableRefsTable(_$Database db) =>
+          MultiTypedResultKey.fromTable(db.goRemindersTable,
+              aliasName: $_aliasNameGenerator(
+                  db.userTable.id, db.goRemindersTable.userId));
+
+  $$GoRemindersTableTableProcessedTableManager get goRemindersTableRefs {
+    final manager =
+        $$GoRemindersTableTableTableManager($_db, $_db.goRemindersTable)
+            .filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_goRemindersTableRefsTable($_db));
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
@@ -4500,6 +5014,27 @@ class $$UserTableTableFilterComposer
             $$GoEventsTableTableFilterComposer(
               $db: $db,
               $table: $db.goEventsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> goRemindersTableRefs(
+      Expression<bool> Function($$GoRemindersTableTableFilterComposer f) f) {
+    final $$GoRemindersTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.goRemindersTable,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoRemindersTableTableFilterComposer(
+              $db: $db,
+              $table: $db.goRemindersTable,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -4683,6 +5218,27 @@ class $$UserTableTableAnnotationComposer
             ));
     return f(composer);
   }
+
+  Expression<T> goRemindersTableRefs<T extends Object>(
+      Expression<T> Function($$GoRemindersTableTableAnnotationComposer a) f) {
+    final $$GoRemindersTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.goRemindersTable,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoRemindersTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.goRemindersTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$UserTableTableTableManager extends RootTableManager<
@@ -4701,7 +5257,8 @@ class $$UserTableTableTableManager extends RootTableManager<
         bool groupsTableRefs,
         bool groupMembersTableRefs,
         bool goLocationsTableRefs,
-        bool goEventsTableRefs})> {
+        bool goEventsTableRefs,
+        bool goRemindersTableRefs})> {
   $$UserTableTableTableManager(_$Database db, $UserTableTable table)
       : super(TableManagerState(
           db: db,
@@ -4767,7 +5324,8 @@ class $$UserTableTableTableManager extends RootTableManager<
               groupsTableRefs = false,
               groupMembersTableRefs = false,
               goLocationsTableRefs = false,
-              goEventsTableRefs = false}) {
+              goEventsTableRefs = false,
+              goRemindersTableRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
@@ -4775,7 +5333,8 @@ class $$UserTableTableTableManager extends RootTableManager<
                 if (groupsTableRefs) db.groupsTable,
                 if (groupMembersTableRefs) db.groupMembersTable,
                 if (goLocationsTableRefs) db.goLocationsTable,
-                if (goEventsTableRefs) db.goEventsTable
+                if (goEventsTableRefs) db.goEventsTable,
+                if (goRemindersTableRefs) db.goRemindersTable
               ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
@@ -4844,6 +5403,19 @@ class $$UserTableTableTableManager extends RootTableManager<
                         referencedItemsForCurrentItem:
                             (item, referencedItems) => referencedItems
                                 .where((e) => e.createdBy == item.id),
+                        typedResults: items),
+                  if (goRemindersTableRefs)
+                    await $_getPrefetchedData<UserTableData, $UserTableTable,
+                            GoRemindersTableData>(
+                        currentTable: table,
+                        referencedTable: $$UserTableTableReferences
+                            ._goRemindersTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$UserTableTableReferences(db, table, p0)
+                                .goRemindersTableRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.userId == item.id),
                         typedResults: items)
                 ];
               },
@@ -4868,7 +5440,8 @@ typedef $$UserTableTableProcessedTableManager = ProcessedTableManager<
         bool groupsTableRefs,
         bool groupMembersTableRefs,
         bool goLocationsTableRefs,
-        bool goEventsTableRefs})>;
+        bool goEventsTableRefs,
+        bool goRemindersTableRefs})>;
 typedef $$UserOtpTableTableCreateCompanionBuilder = UserOtpTableCompanion
     Function({
   Value<String> id,
@@ -8248,6 +8821,23 @@ final class $$GoTasksTableTableReferences
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: [item]));
   }
+
+  static MultiTypedResultKey<$GoRemindersTableTable, List<GoRemindersTableData>>
+      _goRemindersTableRefsTable(_$Database db) =>
+          MultiTypedResultKey.fromTable(db.goRemindersTable,
+              aliasName: $_aliasNameGenerator(
+                  db.goTasksTable.id, db.goRemindersTable.taskId));
+
+  $$GoRemindersTableTableProcessedTableManager get goRemindersTableRefs {
+    final manager =
+        $$GoRemindersTableTableTableManager($_db, $_db.goRemindersTable)
+            .filter((f) => f.taskId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_goRemindersTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$GoTasksTableTableFilterComposer
@@ -8364,6 +8954,27 @@ class $$GoTasksTableTableFilterComposer
                   $removeJoinBuilderFromRootComposer,
             ));
     return composer;
+  }
+
+  Expression<bool> goRemindersTableRefs(
+      Expression<bool> Function($$GoRemindersTableTableFilterComposer f) f) {
+    final $$GoRemindersTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.goRemindersTable,
+        getReferencedColumn: (t) => t.taskId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoRemindersTableTableFilterComposer(
+              $db: $db,
+              $table: $db.goRemindersTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
   }
 }
 
@@ -8599,6 +9210,27 @@ class $$GoTasksTableTableAnnotationComposer
             ));
     return composer;
   }
+
+  Expression<T> goRemindersTableRefs<T extends Object>(
+      Expression<T> Function($$GoRemindersTableTableAnnotationComposer a) f) {
+    final $$GoRemindersTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.goRemindersTable,
+        getReferencedColumn: (t) => t.taskId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoRemindersTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.goRemindersTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$GoTasksTableTableTableManager extends RootTableManager<
@@ -8613,7 +9245,11 @@ class $$GoTasksTableTableTableManager extends RootTableManager<
     (GoTasksTableData, $$GoTasksTableTableReferences),
     GoTasksTableData,
     PrefetchHooks Function(
-        {bool eventId, bool createdBy, bool completedBy, bool updatedBy})> {
+        {bool eventId,
+        bool createdBy,
+        bool completedBy,
+        bool updatedBy,
+        bool goRemindersTableRefs})> {
   $$GoTasksTableTableTableManager(_$Database db, $GoTasksTableTable table)
       : super(TableManagerState(
           db: db,
@@ -8698,10 +9334,13 @@ class $$GoTasksTableTableTableManager extends RootTableManager<
               {eventId = false,
               createdBy = false,
               completedBy = false,
-              updatedBy = false}) {
+              updatedBy = false,
+              goRemindersTableRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [],
+              explicitlyWatchedTables: [
+                if (goRemindersTableRefs) db.goRemindersTable
+              ],
               addJoins: <
                   T extends TableManagerState<
                       dynamic,
@@ -8759,7 +9398,21 @@ class $$GoTasksTableTableTableManager extends RootTableManager<
                 return state;
               },
               getPrefetchedDataCallback: (items) async {
-                return [];
+                return [
+                  if (goRemindersTableRefs)
+                    await $_getPrefetchedData<GoTasksTableData,
+                            $GoTasksTableTable, GoRemindersTableData>(
+                        currentTable: table,
+                        referencedTable: $$GoTasksTableTableReferences
+                            ._goRemindersTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$GoTasksTableTableReferences(db, table, p0)
+                                .goRemindersTableRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.taskId == item.id),
+                        typedResults: items)
+                ];
               },
             );
           },
@@ -8778,7 +9431,429 @@ typedef $$GoTasksTableTableProcessedTableManager = ProcessedTableManager<
     (GoTasksTableData, $$GoTasksTableTableReferences),
     GoTasksTableData,
     PrefetchHooks Function(
-        {bool eventId, bool createdBy, bool completedBy, bool updatedBy})>;
+        {bool eventId,
+        bool createdBy,
+        bool completedBy,
+        bool updatedBy,
+        bool goRemindersTableRefs})>;
+typedef $$GoRemindersTableTableCreateCompanionBuilder
+    = GoRemindersTableCompanion Function({
+  Value<String> id,
+  required String taskId,
+  required String userId,
+  required GoReminderType reminderType,
+  Value<DateTime?> remindAt,
+  Value<int?> minutesBefore,
+  Value<bool> isSent,
+  Value<DateTime?> sentAt,
+  Value<DateTime> createdAt,
+  Value<int> rowid,
+});
+typedef $$GoRemindersTableTableUpdateCompanionBuilder
+    = GoRemindersTableCompanion Function({
+  Value<String> id,
+  Value<String> taskId,
+  Value<String> userId,
+  Value<GoReminderType> reminderType,
+  Value<DateTime?> remindAt,
+  Value<int?> minutesBefore,
+  Value<bool> isSent,
+  Value<DateTime?> sentAt,
+  Value<DateTime> createdAt,
+  Value<int> rowid,
+});
+
+final class $$GoRemindersTableTableReferences extends BaseReferences<_$Database,
+    $GoRemindersTableTable, GoRemindersTableData> {
+  $$GoRemindersTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $GoTasksTableTable _taskIdTable(_$Database db) =>
+      db.goTasksTable.createAlias(
+          $_aliasNameGenerator(db.goRemindersTable.taskId, db.goTasksTable.id));
+
+  $$GoTasksTableTableProcessedTableManager get taskId {
+    final $_column = $_itemColumn<String>('task_id')!;
+
+    final manager = $$GoTasksTableTableTableManager($_db, $_db.goTasksTable)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_taskIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $UserTableTable _userIdTable(_$Database db) =>
+      db.userTable.createAlias(
+          $_aliasNameGenerator(db.goRemindersTable.userId, db.userTable.id));
+
+  $$UserTableTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UserTableTableTableManager($_db, $_db.userTable)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$GoRemindersTableTableFilterComposer
+    extends Composer<_$Database, $GoRemindersTableTable> {
+  $$GoRemindersTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<GoReminderType, GoReminderType, String>
+      get reminderType => $composableBuilder(
+          column: $table.reminderType,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnFilters<DateTime> get remindAt => $composableBuilder(
+      column: $table.remindAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get minutesBefore => $composableBuilder(
+      column: $table.minutesBefore, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isSent => $composableBuilder(
+      column: $table.isSent, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get sentAt => $composableBuilder(
+      column: $table.sentAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  $$GoTasksTableTableFilterComposer get taskId {
+    final $$GoTasksTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.taskId,
+        referencedTable: $db.goTasksTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoTasksTableTableFilterComposer(
+              $db: $db,
+              $table: $db.goTasksTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$UserTableTableFilterComposer get userId {
+    final $$UserTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.userTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableTableFilterComposer(
+              $db: $db,
+              $table: $db.userTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$GoRemindersTableTableOrderingComposer
+    extends Composer<_$Database, $GoRemindersTableTable> {
+  $$GoRemindersTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reminderType => $composableBuilder(
+      column: $table.reminderType,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get remindAt => $composableBuilder(
+      column: $table.remindAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get minutesBefore => $composableBuilder(
+      column: $table.minutesBefore,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isSent => $composableBuilder(
+      column: $table.isSent, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get sentAt => $composableBuilder(
+      column: $table.sentAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  $$GoTasksTableTableOrderingComposer get taskId {
+    final $$GoTasksTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.taskId,
+        referencedTable: $db.goTasksTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoTasksTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.goTasksTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$UserTableTableOrderingComposer get userId {
+    final $$UserTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.userTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.userTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$GoRemindersTableTableAnnotationComposer
+    extends Composer<_$Database, $GoRemindersTableTable> {
+  $$GoRemindersTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<GoReminderType, String> get reminderType =>
+      $composableBuilder(
+          column: $table.reminderType, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get remindAt =>
+      $composableBuilder(column: $table.remindAt, builder: (column) => column);
+
+  GeneratedColumn<int> get minutesBefore => $composableBuilder(
+      column: $table.minutesBefore, builder: (column) => column);
+
+  GeneratedColumn<bool> get isSent =>
+      $composableBuilder(column: $table.isSent, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get sentAt =>
+      $composableBuilder(column: $table.sentAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$GoTasksTableTableAnnotationComposer get taskId {
+    final $$GoTasksTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.taskId,
+        referencedTable: $db.goTasksTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoTasksTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.goTasksTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$UserTableTableAnnotationComposer get userId {
+    final $$UserTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.userTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.userTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$GoRemindersTableTableTableManager extends RootTableManager<
+    _$Database,
+    $GoRemindersTableTable,
+    GoRemindersTableData,
+    $$GoRemindersTableTableFilterComposer,
+    $$GoRemindersTableTableOrderingComposer,
+    $$GoRemindersTableTableAnnotationComposer,
+    $$GoRemindersTableTableCreateCompanionBuilder,
+    $$GoRemindersTableTableUpdateCompanionBuilder,
+    (GoRemindersTableData, $$GoRemindersTableTableReferences),
+    GoRemindersTableData,
+    PrefetchHooks Function({bool taskId, bool userId})> {
+  $$GoRemindersTableTableTableManager(
+      _$Database db, $GoRemindersTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GoRemindersTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GoRemindersTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GoRemindersTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> taskId = const Value.absent(),
+            Value<String> userId = const Value.absent(),
+            Value<GoReminderType> reminderType = const Value.absent(),
+            Value<DateTime?> remindAt = const Value.absent(),
+            Value<int?> minutesBefore = const Value.absent(),
+            Value<bool> isSent = const Value.absent(),
+            Value<DateTime?> sentAt = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              GoRemindersTableCompanion(
+            id: id,
+            taskId: taskId,
+            userId: userId,
+            reminderType: reminderType,
+            remindAt: remindAt,
+            minutesBefore: minutesBefore,
+            isSent: isSent,
+            sentAt: sentAt,
+            createdAt: createdAt,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            required String taskId,
+            required String userId,
+            required GoReminderType reminderType,
+            Value<DateTime?> remindAt = const Value.absent(),
+            Value<int?> minutesBefore = const Value.absent(),
+            Value<bool> isSent = const Value.absent(),
+            Value<DateTime?> sentAt = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              GoRemindersTableCompanion.insert(
+            id: id,
+            taskId: taskId,
+            userId: userId,
+            reminderType: reminderType,
+            remindAt: remindAt,
+            minutesBefore: minutesBefore,
+            isSent: isSent,
+            sentAt: sentAt,
+            createdAt: createdAt,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$GoRemindersTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({taskId = false, userId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (taskId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.taskId,
+                    referencedTable:
+                        $$GoRemindersTableTableReferences._taskIdTable(db),
+                    referencedColumn:
+                        $$GoRemindersTableTableReferences._taskIdTable(db).id,
+                  ) as T;
+                }
+                if (userId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.userId,
+                    referencedTable:
+                        $$GoRemindersTableTableReferences._userIdTable(db),
+                    referencedColumn:
+                        $$GoRemindersTableTableReferences._userIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$GoRemindersTableTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $GoRemindersTableTable,
+    GoRemindersTableData,
+    $$GoRemindersTableTableFilterComposer,
+    $$GoRemindersTableTableOrderingComposer,
+    $$GoRemindersTableTableAnnotationComposer,
+    $$GoRemindersTableTableCreateCompanionBuilder,
+    $$GoRemindersTableTableUpdateCompanionBuilder,
+    (GoRemindersTableData, $$GoRemindersTableTableReferences),
+    GoRemindersTableData,
+    PrefetchHooks Function({bool taskId, bool userId})>;
 
 class $DatabaseManager {
   final _$Database _db;
@@ -8801,4 +9876,6 @@ class $DatabaseManager {
       $$GoParticipantsTableTableTableManager(_db, _db.goParticipantsTable);
   $$GoTasksTableTableTableManager get goTasksTable =>
       $$GoTasksTableTableTableManager(_db, _db.goTasksTable);
+  $$GoRemindersTableTableTableManager get goRemindersTable =>
+      $$GoRemindersTableTableTableManager(_db, _db.goRemindersTable);
 }

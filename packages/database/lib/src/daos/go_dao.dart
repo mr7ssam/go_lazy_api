@@ -10,6 +10,7 @@ part 'go_dao.g.dart';
     GoEventsTable,
     GoLocationsTable,
     GoParticipantsTable,
+    GoRemindersTable,
     GoTasksTable,
   ],
 )

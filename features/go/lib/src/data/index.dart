@@ -35,6 +35,13 @@ extension HandlerUse on Handler {
               goDao: context.read<GoDao>(),
             ),
           ),
+        )
+        .use(
+          provider<IGoRemindersRepo>(
+            (context) => GoRemindersRepo(
+              goDao: context.read<GoDao>(),
+            ),
+          ),
         );
   }
 }

@@ -1,6 +1,7 @@
 export 'go_events_table.dart';
 export 'go_locations_table.dart';
 export 'go_participants_table.dart';
+export 'go_reminders_table.dart';
 export 'go_tasks_table.dart';
 export 'group_invites_table.dart';
 export 'group_members_table.dart';

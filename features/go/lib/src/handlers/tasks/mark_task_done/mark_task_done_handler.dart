@@ -26,7 +26,9 @@ class MarkTaskDoneHandler extends IHandler<MarkTaskDoneRequest, void> {
 
       if (task == null) {
         return HandlerResult.failed(
-          error: NotFoundError(message: _localization.translations.taskNotFound),
+          error: NotFoundError(
+            message: _localization.translations.taskNotFound,
+          ),
         );
       }
 
@@ -39,7 +41,9 @@ class MarkTaskDoneHandler extends IHandler<MarkTaskDoneRequest, void> {
 
       if (!isCreator && (task.isPrivate || !isParticipant)) {
         return HandlerResult.failed(
-          error: UnauthorizedError(message: _localization.translations.accessDenied),
+          error: UnauthorizedError(
+            message: _localization.translations.accessDenied,
+          ),
         );
       }
 
