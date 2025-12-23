@@ -653,19 +653,17 @@ GoEvent ──┬── has many ──> GoParticipant
 - [ ] Write unit tests
 - [ ] (Future) Implement reminder sending service
 
-### Phase 4: Expenses & Progress 💰
-> Cost tracking and event readiness
+### Phase 4: Progress Tracking ✅
+> Event readiness monitoring (expenses deferred to future)
 
-- [ ] Add expense fields to `go_tasks` table
-- [ ] Create `AddExpenseHandler`
-- [ ] Create `GetEventProgressHandler`
+- [x] Create `GetEventProgressHandler`
   - Total/completed tasks count
   - Progress percentage
-  - Total expenses
-  - Expenses by user
   - Overdue tasks
-- [ ] Create routes
+- [x] Create progress route
+- [x] Add localization keys
 - [ ] Write unit tests
+- [ ] (Future) Add expense tracking features
 
 ### Phase 5: Polls & Voting 🗳️
 > Democratic event planning

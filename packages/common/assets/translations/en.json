@@ -20,5 +20,6 @@
       "goReminderCreated": "Reminder set",
       "goReminderUpdated": "Reminder updated",
       "goReminderDeleted": "Reminder deleted",
-      "goReminderNotFound": "Reminder not found"
+      "goReminderNotFound": "Reminder not found",
+      "goEventNotFound": "Event not found"
 }

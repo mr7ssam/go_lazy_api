@@ -20,5 +20,6 @@
       "goReminderCreated": "تم تعيين التذكير",
       "goReminderUpdated": "تم تحديث التذكير",
       "goReminderDeleted": "تم حذف التذكير",
-      "goReminderNotFound": "التذكير غير موجود"
+      "goReminderNotFound": "التذكير غير موجود",
+      "goEventNotFound": "الحدث غير موجود"
 }

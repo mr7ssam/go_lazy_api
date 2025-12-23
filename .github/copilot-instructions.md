@@ -105,6 +105,9 @@ when(() => handler.handle(any())).thenAnswer(
 ## Project-Specific Conventions
 
 1. **Request/Response DTOs**: Co-located with handlers in `*_exchange.dart` (e.g., `create_reminder_exchange.dart`)
+   - Use plain Dart classes **without** code generation annotations (`@JsonSerializable`, `@freezed`)
+   - Implement manual `toJson()` methods for responses
+   - Parse requests manually from `Map<String, dynamic>` in handlers
 
 2. **Error Handling**: Use typed errors from `packages/common/lib/src/error/`:
    - `NotFoundError` (404), `UnauthorizedError` (401), `ConflictError` (409)
@@ -150,3 +153,4 @@ when(() => handler.handle(any())).thenAnswer(
 - **ArgumentError**: Use `e.toString()` not `e.message` when catching ArgumentError
 - **Unused imports**: Remove unused `TransactionManager` in read-only handlers
 - **Trailing commas**: Always add trailing commas to function arguments, parameters, and collections to avoid Dart Frog linter issues
+- **No code generation for DTOs**: Never use `@JsonSerializable()`, `@freezed`, or similar annotations on request/response classes. Use plain Dart classes with manual `toJson()` methods only

@@ -103,6 +103,15 @@ extension HandlerUse on Handler {
               localization: context.read<LocalizationService>(),
             ),
           ),
+        )
+        .use(
+          provider<GetEventProgressHandler>(
+            (context) => GetEventProgressHandler(
+              goTasksRepo: context.read<IGoTasksRepo>(),
+              goEventsRepo: context.read<IGoEventsRepo>(),
+              localizationService: context.read<LocalizationService>(),
+            ),
+          ),
         );
   }
 }
