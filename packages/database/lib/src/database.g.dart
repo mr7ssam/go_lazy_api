@@ -2586,6 +2586,14 @@ class $GoEventsTableTable extends GoEventsTable
       $customConstraints: 'NOT NULL DEFAULT true',
       defaultValue: const CustomExpression('TRUE'));
   @override
+  late final GeneratedColumnWithTypeConverter<GoVisibilityEnum, String>
+      visibility = GeneratedColumn<String>('visibility', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: false,
+              defaultValue: const Constant('public'))
+          .withConverter<GoVisibilityEnum>(
+              $GoEventsTableTable.$convertervisibility);
+  @override
   List<GeneratedColumn> get $columns => [
         id,
         title,
@@ -2598,7 +2606,8 @@ class $GoEventsTableTable extends GoEventsTable
         createdBy,
         createdAt,
         updatedAt,
-        isActive
+        isActive,
+        visibility
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2702,6 +2711,9 @@ class $GoEventsTableTable extends GoEventsTable
           .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
       isActive: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_active'])!,
+      visibility: $GoEventsTableTable.$convertervisibility.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}visibility'])!),
     );
   }
 
@@ -2709,6 +2721,10 @@ class $GoEventsTableTable extends GoEventsTable
   $GoEventsTableTable createAlias(String alias) {
     return $GoEventsTableTable(attachedDatabase, alias);
   }
+
+  static JsonTypeConverter2<GoVisibilityEnum, String, String>
+      $convertervisibility =
+      const EnumNameConverter<GoVisibilityEnum>(GoVisibilityEnum.values);
 }
 
 class GoEventsTableData extends DataClass
@@ -2725,6 +2741,7 @@ class GoEventsTableData extends DataClass
   final DateTime createdAt;
   final DateTime? updatedAt;
   final bool isActive;
+  final GoVisibilityEnum visibility;
   const GoEventsTableData(
       {required this.id,
       required this.title,
@@ -2737,7 +2754,8 @@ class GoEventsTableData extends DataClass
       required this.createdBy,
       required this.createdAt,
       this.updatedAt,
-      required this.isActive});
+      required this.isActive,
+      required this.visibility});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -2765,6 +2783,10 @@ class GoEventsTableData extends DataClass
       map['updated_at'] = Variable<DateTime>(updatedAt);
     }
     map['is_active'] = Variable<bool>(isActive);
+    {
+      map['visibility'] = Variable<String>(
+          $GoEventsTableTable.$convertervisibility.toSql(visibility));
+    }
     return map;
   }
 
@@ -2794,6 +2816,7 @@ class GoEventsTableData extends DataClass
           ? const Value.absent()
           : Value(updatedAt),
       isActive: Value(isActive),
+      visibility: Value(visibility),
     );
   }
 
@@ -2813,6 +2836,8 @@ class GoEventsTableData extends DataClass
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
       isActive: serializer.fromJson<bool>(json['isActive']),
+      visibility: $GoEventsTableTable.$convertervisibility
+          .fromJson(serializer.fromJson<String>(json['visibility'])),
     );
   }
   @override
@@ -2831,6 +2856,8 @@ class GoEventsTableData extends DataClass
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
       'isActive': serializer.toJson<bool>(isActive),
+      'visibility': serializer.toJson<String>(
+          $GoEventsTableTable.$convertervisibility.toJson(visibility)),
     };
   }
 
@@ -2846,7 +2873,8 @@ class GoEventsTableData extends DataClass
           String? createdBy,
           DateTime? createdAt,
           Value<DateTime?> updatedAt = const Value.absent(),
-          bool? isActive}) =>
+          bool? isActive,
+          GoVisibilityEnum? visibility}) =>
       GoEventsTableData(
         id: id ?? this.id,
         title: title ?? this.title,
@@ -2861,6 +2889,7 @@ class GoEventsTableData extends DataClass
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
         isActive: isActive ?? this.isActive,
+        visibility: visibility ?? this.visibility,
       );
   GoEventsTableData copyWithCompanion(GoEventsTableCompanion data) {
     return GoEventsTableData(
@@ -2880,6 +2909,8 @@ class GoEventsTableData extends DataClass
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      visibility:
+          data.visibility.present ? data.visibility.value : this.visibility,
     );
   }
 
@@ -2897,7 +2928,8 @@ class GoEventsTableData extends DataClass
           ..write('createdBy: $createdBy, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('isActive: $isActive')
+          ..write('isActive: $isActive, ')
+          ..write('visibility: $visibility')
           ..write(')'))
         .toString();
   }
@@ -2915,7 +2947,8 @@ class GoEventsTableData extends DataClass
       createdBy,
       createdAt,
       updatedAt,
-      isActive);
+      isActive,
+      visibility);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2931,7 +2964,8 @@ class GoEventsTableData extends DataClass
           other.createdBy == this.createdBy &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
-          other.isActive == this.isActive);
+          other.isActive == this.isActive &&
+          other.visibility == this.visibility);
 }
 
 class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
@@ -2947,6 +2981,7 @@ class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
   final Value<DateTime> createdAt;
   final Value<DateTime?> updatedAt;
   final Value<bool> isActive;
+  final Value<GoVisibilityEnum> visibility;
   final Value<int> rowid;
   const GoEventsTableCompanion({
     this.id = const Value.absent(),
@@ -2961,6 +2996,7 @@ class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.isActive = const Value.absent(),
+    this.visibility = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   GoEventsTableCompanion.insert({
@@ -2976,6 +3012,7 @@ class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.isActive = const Value.absent(),
+    this.visibility = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : title = Value(title),
         startDate = Value(startDate),
@@ -2993,6 +3030,7 @@ class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<bool>? isActive,
+    Expression<String>? visibility,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -3008,6 +3046,7 @@ class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (isActive != null) 'is_active': isActive,
+      if (visibility != null) 'visibility': visibility,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -3025,6 +3064,7 @@ class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
       Value<DateTime>? createdAt,
       Value<DateTime?>? updatedAt,
       Value<bool>? isActive,
+      Value<GoVisibilityEnum>? visibility,
       Value<int>? rowid}) {
     return GoEventsTableCompanion(
       id: id ?? this.id,
@@ -3039,6 +3079,7 @@ class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       isActive: isActive ?? this.isActive,
+      visibility: visibility ?? this.visibility,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -3082,6 +3123,10 @@ class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
     if (isActive.present) {
       map['is_active'] = Variable<bool>(isActive.value);
     }
+    if (visibility.present) {
+      map['visibility'] = Variable<String>(
+          $GoEventsTableTable.$convertervisibility.toSql(visibility.value));
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -3103,6 +3148,7 @@ class GoEventsTableCompanion extends UpdateCompanion<GoEventsTableData> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('isActive: $isActive, ')
+          ..write('visibility: $visibility, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -4703,6 +4749,600 @@ class GoRemindersTableCompanion extends UpdateCompanion<GoRemindersTableData> {
   }
 }
 
+class $LocationTableTable extends LocationTable
+    with TableInfo<$LocationTableTable, LocationTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LocationTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+      'user_id', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES users (id) ON DELETE CASCADE'));
+  static const VerificationMeta _groupIdMeta =
+      const VerificationMeta('groupId');
+  @override
+  late final GeneratedColumn<String> groupId = GeneratedColumn<String>(
+      'group_id', aliasedName, true,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES "groups" (id) ON DELETE CASCADE'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 100),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _addressMeta =
+      const VerificationMeta('address');
+  @override
+  late final GeneratedColumn<String> address = GeneratedColumn<String>(
+      'address', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 500),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _latitudeMeta =
+      const VerificationMeta('latitude');
+  @override
+  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
+      'latitude', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _longitudeMeta =
+      const VerificationMeta('longitude');
+  @override
+  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
+      'longitude', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _categoryMeta =
+      const VerificationMeta('category');
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+      'category', aliasedName, true,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 50),
+      type: DriftSqlType.string,
+      requiredDuringInsert: false);
+  static const VerificationMeta _isFavoriteMeta =
+      const VerificationMeta('isFavorite');
+  @override
+  late final GeneratedColumn<bool> isFavorite = GeneratedColumn<bool>(
+      'is_favorite', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_favorite" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 500),
+      type: DriftSqlType.string,
+      requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        userId,
+        groupId,
+        name,
+        address,
+        latitude,
+        longitude,
+        category,
+        isFavorite,
+        notes,
+        createdAt,
+        updatedAt
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'locations';
+  @override
+  VerificationContext validateIntegrity(Insertable<LocationTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    }
+    if (data.containsKey('group_id')) {
+      context.handle(_groupIdMeta,
+          groupId.isAcceptableOrUnknown(data['group_id']!, _groupIdMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('address')) {
+      context.handle(_addressMeta,
+          address.isAcceptableOrUnknown(data['address']!, _addressMeta));
+    } else if (isInserting) {
+      context.missing(_addressMeta);
+    }
+    if (data.containsKey('latitude')) {
+      context.handle(_latitudeMeta,
+          latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta));
+    } else if (isInserting) {
+      context.missing(_latitudeMeta);
+    }
+    if (data.containsKey('longitude')) {
+      context.handle(_longitudeMeta,
+          longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta));
+    } else if (isInserting) {
+      context.missing(_longitudeMeta);
+    }
+    if (data.containsKey('category')) {
+      context.handle(_categoryMeta,
+          category.isAcceptableOrUnknown(data['category']!, _categoryMeta));
+    }
+    if (data.containsKey('is_favorite')) {
+      context.handle(
+          _isFavoriteMeta,
+          isFavorite.isAcceptableOrUnknown(
+              data['is_favorite']!, _isFavoriteMeta));
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+        {userId, name},
+        {groupId, name},
+      ];
+  @override
+  LocationTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LocationTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id']),
+      groupId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}group_id']),
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      address: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}address'])!,
+      latitude: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}latitude'])!,
+      longitude: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}longitude'])!,
+      category: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}category']),
+      isFavorite: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_favorite'])!,
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+    );
+  }
+
+  @override
+  $LocationTableTable createAlias(String alias) {
+    return $LocationTableTable(attachedDatabase, alias);
+  }
+}
+
+class LocationTableData extends DataClass
+    implements Insertable<LocationTableData> {
+  final int id;
+  final String? userId;
+  final String? groupId;
+  final String name;
+  final String address;
+  final double latitude;
+  final double longitude;
+  final String? category;
+  final bool isFavorite;
+  final String? notes;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const LocationTableData(
+      {required this.id,
+      this.userId,
+      this.groupId,
+      required this.name,
+      required this.address,
+      required this.latitude,
+      required this.longitude,
+      this.category,
+      required this.isFavorite,
+      this.notes,
+      required this.createdAt,
+      required this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || userId != null) {
+      map['user_id'] = Variable<String>(userId);
+    }
+    if (!nullToAbsent || groupId != null) {
+      map['group_id'] = Variable<String>(groupId);
+    }
+    map['name'] = Variable<String>(name);
+    map['address'] = Variable<String>(address);
+    map['latitude'] = Variable<double>(latitude);
+    map['longitude'] = Variable<double>(longitude);
+    if (!nullToAbsent || category != null) {
+      map['category'] = Variable<String>(category);
+    }
+    map['is_favorite'] = Variable<bool>(isFavorite);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  LocationTableCompanion toCompanion(bool nullToAbsent) {
+    return LocationTableCompanion(
+      id: Value(id),
+      userId:
+          userId == null && nullToAbsent ? const Value.absent() : Value(userId),
+      groupId: groupId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(groupId),
+      name: Value(name),
+      address: Value(address),
+      latitude: Value(latitude),
+      longitude: Value(longitude),
+      category: category == null && nullToAbsent
+          ? const Value.absent()
+          : Value(category),
+      isFavorite: Value(isFavorite),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory LocationTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LocationTableData(
+      id: serializer.fromJson<int>(json['id']),
+      userId: serializer.fromJson<String?>(json['userId']),
+      groupId: serializer.fromJson<String?>(json['groupId']),
+      name: serializer.fromJson<String>(json['name']),
+      address: serializer.fromJson<String>(json['address']),
+      latitude: serializer.fromJson<double>(json['latitude']),
+      longitude: serializer.fromJson<double>(json['longitude']),
+      category: serializer.fromJson<String?>(json['category']),
+      isFavorite: serializer.fromJson<bool>(json['isFavorite']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'userId': serializer.toJson<String?>(userId),
+      'groupId': serializer.toJson<String?>(groupId),
+      'name': serializer.toJson<String>(name),
+      'address': serializer.toJson<String>(address),
+      'latitude': serializer.toJson<double>(latitude),
+      'longitude': serializer.toJson<double>(longitude),
+      'category': serializer.toJson<String?>(category),
+      'isFavorite': serializer.toJson<bool>(isFavorite),
+      'notes': serializer.toJson<String?>(notes),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  LocationTableData copyWith(
+          {int? id,
+          Value<String?> userId = const Value.absent(),
+          Value<String?> groupId = const Value.absent(),
+          String? name,
+          String? address,
+          double? latitude,
+          double? longitude,
+          Value<String?> category = const Value.absent(),
+          bool? isFavorite,
+          Value<String?> notes = const Value.absent(),
+          DateTime? createdAt,
+          DateTime? updatedAt}) =>
+      LocationTableData(
+        id: id ?? this.id,
+        userId: userId.present ? userId.value : this.userId,
+        groupId: groupId.present ? groupId.value : this.groupId,
+        name: name ?? this.name,
+        address: address ?? this.address,
+        latitude: latitude ?? this.latitude,
+        longitude: longitude ?? this.longitude,
+        category: category.present ? category.value : this.category,
+        isFavorite: isFavorite ?? this.isFavorite,
+        notes: notes.present ? notes.value : this.notes,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  LocationTableData copyWithCompanion(LocationTableCompanion data) {
+    return LocationTableData(
+      id: data.id.present ? data.id.value : this.id,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      groupId: data.groupId.present ? data.groupId.value : this.groupId,
+      name: data.name.present ? data.name.value : this.name,
+      address: data.address.present ? data.address.value : this.address,
+      latitude: data.latitude.present ? data.latitude.value : this.latitude,
+      longitude: data.longitude.present ? data.longitude.value : this.longitude,
+      category: data.category.present ? data.category.value : this.category,
+      isFavorite:
+          data.isFavorite.present ? data.isFavorite.value : this.isFavorite,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocationTableData(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('groupId: $groupId, ')
+          ..write('name: $name, ')
+          ..write('address: $address, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('category: $category, ')
+          ..write('isFavorite: $isFavorite, ')
+          ..write('notes: $notes, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, userId, groupId, name, address, latitude,
+      longitude, category, isFavorite, notes, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LocationTableData &&
+          other.id == this.id &&
+          other.userId == this.userId &&
+          other.groupId == this.groupId &&
+          other.name == this.name &&
+          other.address == this.address &&
+          other.latitude == this.latitude &&
+          other.longitude == this.longitude &&
+          other.category == this.category &&
+          other.isFavorite == this.isFavorite &&
+          other.notes == this.notes &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class LocationTableCompanion extends UpdateCompanion<LocationTableData> {
+  final Value<int> id;
+  final Value<String?> userId;
+  final Value<String?> groupId;
+  final Value<String> name;
+  final Value<String> address;
+  final Value<double> latitude;
+  final Value<double> longitude;
+  final Value<String?> category;
+  final Value<bool> isFavorite;
+  final Value<String?> notes;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const LocationTableCompanion({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.groupId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.address = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+    this.category = const Value.absent(),
+    this.isFavorite = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  LocationTableCompanion.insert({
+    this.id = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.groupId = const Value.absent(),
+    required String name,
+    required String address,
+    required double latitude,
+    required double longitude,
+    this.category = const Value.absent(),
+    this.isFavorite = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  })  : name = Value(name),
+        address = Value(address),
+        latitude = Value(latitude),
+        longitude = Value(longitude);
+  static Insertable<LocationTableData> custom({
+    Expression<int>? id,
+    Expression<String>? userId,
+    Expression<String>? groupId,
+    Expression<String>? name,
+    Expression<String>? address,
+    Expression<double>? latitude,
+    Expression<double>? longitude,
+    Expression<String>? category,
+    Expression<bool>? isFavorite,
+    Expression<String>? notes,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (userId != null) 'user_id': userId,
+      if (groupId != null) 'group_id': groupId,
+      if (name != null) 'name': name,
+      if (address != null) 'address': address,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (category != null) 'category': category,
+      if (isFavorite != null) 'is_favorite': isFavorite,
+      if (notes != null) 'notes': notes,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  LocationTableCompanion copyWith(
+      {Value<int>? id,
+      Value<String?>? userId,
+      Value<String?>? groupId,
+      Value<String>? name,
+      Value<String>? address,
+      Value<double>? latitude,
+      Value<double>? longitude,
+      Value<String?>? category,
+      Value<bool>? isFavorite,
+      Value<String?>? notes,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt}) {
+    return LocationTableCompanion(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      groupId: groupId ?? this.groupId,
+      name: name ?? this.name,
+      address: address ?? this.address,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      category: category ?? this.category,
+      isFavorite: isFavorite ?? this.isFavorite,
+      notes: notes ?? this.notes,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (groupId.present) {
+      map['group_id'] = Variable<String>(groupId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (address.present) {
+      map['address'] = Variable<String>(address.value);
+    }
+    if (latitude.present) {
+      map['latitude'] = Variable<double>(latitude.value);
+    }
+    if (longitude.present) {
+      map['longitude'] = Variable<double>(longitude.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (isFavorite.present) {
+      map['is_favorite'] = Variable<bool>(isFavorite.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocationTableCompanion(')
+          ..write('id: $id, ')
+          ..write('userId: $userId, ')
+          ..write('groupId: $groupId, ')
+          ..write('name: $name, ')
+          ..write('address: $address, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude, ')
+          ..write('category: $category, ')
+          ..write('isFavorite: $isFavorite, ')
+          ..write('notes: $notes, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
@@ -4721,6 +5361,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final $GoTasksTableTable goTasksTable = $GoTasksTableTable(this);
   late final $GoRemindersTableTable goRemindersTable =
       $GoRemindersTableTable(this);
+  late final $LocationTableTable locationTable = $LocationTableTable(this);
   late final Index idxGoParticipantsLookup = Index('idx_go_participants_lookup',
       'CREATE INDEX idx_go_participants_lookup ON go_participants (event_id, user_id)');
   late final Index idxGoRemindersTask = Index('idx_go_reminders_task',
@@ -4734,6 +5375,7 @@ abstract class _$Database extends GeneratedDatabase {
   late final UsersDao usersDao = UsersDao(this as Database);
   late final GroupsDao groupsDao = GroupsDao(this as Database);
   late final GoDao goDao = GoDao(this as Database);
+  late final LocationDao locationDao = LocationDao(this as Database);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4749,12 +5391,32 @@ abstract class _$Database extends GeneratedDatabase {
         goParticipantsTable,
         goTasksTable,
         goRemindersTable,
+        locationTable,
         idxGoParticipantsLookup,
         idxGoRemindersTask,
         idxGoRemindersUser,
         idxGoRemindersRemindAt,
         idxGoTasksEventPrivacy
       ];
+  @override
+  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
+        [
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('users',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('locations', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('groups',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('locations', kind: UpdateKind.delete),
+            ],
+          ),
+        ],
+      );
 }
 
 typedef $$UserTableTableCreateCompanionBuilder = UserTableCompanion Function({
@@ -4877,6 +5539,21 @@ final class $$UserTableTableReferences
 
     final cache =
         $_typedResult.readTableOrNull(_goRemindersTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$LocationTableTable, List<LocationTableData>>
+      _locationTableRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
+          db.locationTable,
+          aliasName:
+              $_aliasNameGenerator(db.userTable.id, db.locationTable.userId));
+
+  $$LocationTableTableProcessedTableManager get locationTableRefs {
+    final manager = $$LocationTableTableTableManager($_db, $_db.locationTable)
+        .filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_locationTableRefsTable($_db));
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
@@ -5035,6 +5712,27 @@ class $$UserTableTableFilterComposer
             $$GoRemindersTableTableFilterComposer(
               $db: $db,
               $table: $db.goRemindersTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> locationTableRefs(
+      Expression<bool> Function($$LocationTableTableFilterComposer f) f) {
+    final $$LocationTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.locationTable,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$LocationTableTableFilterComposer(
+              $db: $db,
+              $table: $db.locationTable,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -5239,6 +5937,27 @@ class $$UserTableTableAnnotationComposer
             ));
     return f(composer);
   }
+
+  Expression<T> locationTableRefs<T extends Object>(
+      Expression<T> Function($$LocationTableTableAnnotationComposer a) f) {
+    final $$LocationTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.locationTable,
+        getReferencedColumn: (t) => t.userId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$LocationTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.locationTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$UserTableTableTableManager extends RootTableManager<
@@ -5258,7 +5977,8 @@ class $$UserTableTableTableManager extends RootTableManager<
         bool groupMembersTableRefs,
         bool goLocationsTableRefs,
         bool goEventsTableRefs,
-        bool goRemindersTableRefs})> {
+        bool goRemindersTableRefs,
+        bool locationTableRefs})> {
   $$UserTableTableTableManager(_$Database db, $UserTableTable table)
       : super(TableManagerState(
           db: db,
@@ -5325,7 +6045,8 @@ class $$UserTableTableTableManager extends RootTableManager<
               groupMembersTableRefs = false,
               goLocationsTableRefs = false,
               goEventsTableRefs = false,
-              goRemindersTableRefs = false}) {
+              goRemindersTableRefs = false,
+              locationTableRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
@@ -5334,7 +6055,8 @@ class $$UserTableTableTableManager extends RootTableManager<
                 if (groupMembersTableRefs) db.groupMembersTable,
                 if (goLocationsTableRefs) db.goLocationsTable,
                 if (goEventsTableRefs) db.goEventsTable,
-                if (goRemindersTableRefs) db.goRemindersTable
+                if (goRemindersTableRefs) db.goRemindersTable,
+                if (locationTableRefs) db.locationTable
               ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
@@ -5416,6 +6138,19 @@ class $$UserTableTableTableManager extends RootTableManager<
                         referencedItemsForCurrentItem: (item,
                                 referencedItems) =>
                             referencedItems.where((e) => e.userId == item.id),
+                        typedResults: items),
+                  if (locationTableRefs)
+                    await $_getPrefetchedData<UserTableData, $UserTableTable,
+                            LocationTableData>(
+                        currentTable: table,
+                        referencedTable: $$UserTableTableReferences
+                            ._locationTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$UserTableTableReferences(db, table, p0)
+                                .locationTableRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.userId == item.id),
                         typedResults: items)
                 ];
               },
@@ -5441,7 +6176,8 @@ typedef $$UserTableTableProcessedTableManager = ProcessedTableManager<
         bool groupMembersTableRefs,
         bool goLocationsTableRefs,
         bool goEventsTableRefs,
-        bool goRemindersTableRefs})>;
+        bool goRemindersTableRefs,
+        bool locationTableRefs})>;
 typedef $$UserOtpTableTableCreateCompanionBuilder = UserOtpTableCompanion
     Function({
   Value<String> id,
@@ -5813,6 +6549,21 @@ final class $$GroupsTableTableReferences
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
+
+  static MultiTypedResultKey<$LocationTableTable, List<LocationTableData>>
+      _locationTableRefsTable(_$Database db) =>
+          MultiTypedResultKey.fromTable(db.locationTable,
+              aliasName: $_aliasNameGenerator(
+                  db.groupsTable.id, db.locationTable.groupId));
+
+  $$LocationTableTableProcessedTableManager get locationTableRefs {
+    final manager = $$LocationTableTableTableManager($_db, $_db.locationTable)
+        .filter((f) => f.groupId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_locationTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$GroupsTableTableFilterComposer
@@ -5920,6 +6671,27 @@ class $$GroupsTableTableFilterComposer
             $$GoEventsTableTableFilterComposer(
               $db: $db,
               $table: $db.goEventsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> locationTableRefs(
+      Expression<bool> Function($$LocationTableTableFilterComposer f) f) {
+    final $$LocationTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.locationTable,
+        getReferencedColumn: (t) => t.groupId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$LocationTableTableFilterComposer(
+              $db: $db,
+              $table: $db.locationTable,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -6094,6 +6866,27 @@ class $$GroupsTableTableAnnotationComposer
             ));
     return f(composer);
   }
+
+  Expression<T> locationTableRefs<T extends Object>(
+      Expression<T> Function($$LocationTableTableAnnotationComposer a) f) {
+    final $$LocationTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.locationTable,
+        getReferencedColumn: (t) => t.groupId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$LocationTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.locationTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$GroupsTableTableTableManager extends RootTableManager<
@@ -6111,7 +6904,8 @@ class $$GroupsTableTableTableManager extends RootTableManager<
         {bool createdBy,
         bool groupMembersTableRefs,
         bool groupInvitesTableRefs,
-        bool goEventsTableRefs})> {
+        bool goEventsTableRefs,
+        bool locationTableRefs})> {
   $$GroupsTableTableTableManager(_$Database db, $GroupsTableTable table)
       : super(TableManagerState(
           db: db,
@@ -6176,13 +6970,15 @@ class $$GroupsTableTableTableManager extends RootTableManager<
               {createdBy = false,
               groupMembersTableRefs = false,
               groupInvitesTableRefs = false,
-              goEventsTableRefs = false}) {
+              goEventsTableRefs = false,
+              locationTableRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
                 if (groupMembersTableRefs) db.groupMembersTable,
                 if (groupInvitesTableRefs) db.groupInvitesTable,
-                if (goEventsTableRefs) db.goEventsTable
+                if (goEventsTableRefs) db.goEventsTable,
+                if (locationTableRefs) db.locationTable
               ],
               addJoins: <
                   T extends TableManagerState<
@@ -6250,6 +7046,19 @@ class $$GroupsTableTableTableManager extends RootTableManager<
                         referencedItemsForCurrentItem: (item,
                                 referencedItems) =>
                             referencedItems.where((e) => e.groupId == item.id),
+                        typedResults: items),
+                  if (locationTableRefs)
+                    await $_getPrefetchedData<GroupsTableData,
+                            $GroupsTableTable, LocationTableData>(
+                        currentTable: table,
+                        referencedTable: $$GroupsTableTableReferences
+                            ._locationTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$GroupsTableTableReferences(db, table, p0)
+                                .locationTableRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.groupId == item.id),
                         typedResults: items)
                 ];
               },
@@ -6273,7 +7082,8 @@ typedef $$GroupsTableTableProcessedTableManager = ProcessedTableManager<
         {bool createdBy,
         bool groupMembersTableRefs,
         bool groupInvitesTableRefs,
-        bool goEventsTableRefs})>;
+        bool goEventsTableRefs,
+        bool locationTableRefs})>;
 typedef $$GroupMembersTableTableCreateCompanionBuilder
     = GroupMembersTableCompanion Function({
   Value<String> id,
@@ -7554,6 +8364,7 @@ typedef $$GoEventsTableTableCreateCompanionBuilder = GoEventsTableCompanion
   Value<DateTime> createdAt,
   Value<DateTime?> updatedAt,
   Value<bool> isActive,
+  Value<GoVisibilityEnum> visibility,
   Value<int> rowid,
 });
 typedef $$GoEventsTableTableUpdateCompanionBuilder = GoEventsTableCompanion
@@ -7570,6 +8381,7 @@ typedef $$GoEventsTableTableUpdateCompanionBuilder = GoEventsTableCompanion
   Value<DateTime> createdAt,
   Value<DateTime?> updatedAt,
   Value<bool> isActive,
+  Value<GoVisibilityEnum> visibility,
   Value<int> rowid,
 });
 
@@ -7693,6 +8505,11 @@ class $$GoEventsTableTableFilterComposer
 
   ColumnFilters<bool> get isActive => $composableBuilder(
       column: $table.isActive, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<GoVisibilityEnum, GoVisibilityEnum, String>
+      get visibility => $composableBuilder(
+          column: $table.visibility,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
 
   $$GoLocationsTableTableFilterComposer get locationId {
     final $$GoLocationsTableTableFilterComposer composer = $composerBuilder(
@@ -7834,6 +8651,9 @@ class $$GoEventsTableTableOrderingComposer
   ColumnOrderings<bool> get isActive => $composableBuilder(
       column: $table.isActive, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get visibility => $composableBuilder(
+      column: $table.visibility, builder: (column) => ColumnOrderings(column));
+
   $$GoLocationsTableTableOrderingComposer get locationId {
     final $$GoLocationsTableTableOrderingComposer composer = $composerBuilder(
         composer: this,
@@ -7930,6 +8750,10 @@ class $$GoEventsTableTableAnnotationComposer
 
   GeneratedColumn<bool> get isActive =>
       $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<GoVisibilityEnum, String> get visibility =>
+      $composableBuilder(
+          column: $table.visibility, builder: (column) => column);
 
   $$GoLocationsTableTableAnnotationComposer get locationId {
     final $$GoLocationsTableTableAnnotationComposer composer = $composerBuilder(
@@ -8076,6 +8900,7 @@ class $$GoEventsTableTableTableManager extends RootTableManager<
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime?> updatedAt = const Value.absent(),
             Value<bool> isActive = const Value.absent(),
+            Value<GoVisibilityEnum> visibility = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               GoEventsTableCompanion(
@@ -8091,6 +8916,7 @@ class $$GoEventsTableTableTableManager extends RootTableManager<
             createdAt: createdAt,
             updatedAt: updatedAt,
             isActive: isActive,
+            visibility: visibility,
             rowid: rowid,
           ),
           createCompanionCallback: ({
@@ -8106,6 +8932,7 @@ class $$GoEventsTableTableTableManager extends RootTableManager<
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime?> updatedAt = const Value.absent(),
             Value<bool> isActive = const Value.absent(),
+            Value<GoVisibilityEnum> visibility = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               GoEventsTableCompanion.insert(
@@ -8121,6 +8948,7 @@ class $$GoEventsTableTableTableManager extends RootTableManager<
             createdAt: createdAt,
             updatedAt: updatedAt,
             isActive: isActive,
+            visibility: visibility,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
@@ -9854,6 +10682,457 @@ typedef $$GoRemindersTableTableProcessedTableManager = ProcessedTableManager<
     (GoRemindersTableData, $$GoRemindersTableTableReferences),
     GoRemindersTableData,
     PrefetchHooks Function({bool taskId, bool userId})>;
+typedef $$LocationTableTableCreateCompanionBuilder = LocationTableCompanion
+    Function({
+  Value<int> id,
+  Value<String?> userId,
+  Value<String?> groupId,
+  required String name,
+  required String address,
+  required double latitude,
+  required double longitude,
+  Value<String?> category,
+  Value<bool> isFavorite,
+  Value<String?> notes,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+});
+typedef $$LocationTableTableUpdateCompanionBuilder = LocationTableCompanion
+    Function({
+  Value<int> id,
+  Value<String?> userId,
+  Value<String?> groupId,
+  Value<String> name,
+  Value<String> address,
+  Value<double> latitude,
+  Value<double> longitude,
+  Value<String?> category,
+  Value<bool> isFavorite,
+  Value<String?> notes,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+});
+
+final class $$LocationTableTableReferences
+    extends BaseReferences<_$Database, $LocationTableTable, LocationTableData> {
+  $$LocationTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $UserTableTable _userIdTable(_$Database db) =>
+      db.userTable.createAlias(
+          $_aliasNameGenerator(db.locationTable.userId, db.userTable.id));
+
+  $$UserTableTableProcessedTableManager? get userId {
+    final $_column = $_itemColumn<String>('user_id');
+    if ($_column == null) return null;
+    final manager = $$UserTableTableTableManager($_db, $_db.userTable)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $GroupsTableTable _groupIdTable(_$Database db) =>
+      db.groupsTable.createAlias(
+          $_aliasNameGenerator(db.locationTable.groupId, db.groupsTable.id));
+
+  $$GroupsTableTableProcessedTableManager? get groupId {
+    final $_column = $_itemColumn<String>('group_id');
+    if ($_column == null) return null;
+    final manager = $$GroupsTableTableTableManager($_db, $_db.groupsTable)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_groupIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$LocationTableTableFilterComposer
+    extends Composer<_$Database, $LocationTableTable> {
+  $$LocationTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get address => $composableBuilder(
+      column: $table.address, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get latitude => $composableBuilder(
+      column: $table.latitude, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get longitude => $composableBuilder(
+      column: $table.longitude, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get category => $composableBuilder(
+      column: $table.category, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isFavorite => $composableBuilder(
+      column: $table.isFavorite, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  $$UserTableTableFilterComposer get userId {
+    final $$UserTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.userTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableTableFilterComposer(
+              $db: $db,
+              $table: $db.userTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$GroupsTableTableFilterComposer get groupId {
+    final $$GroupsTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.groupId,
+        referencedTable: $db.groupsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GroupsTableTableFilterComposer(
+              $db: $db,
+              $table: $db.groupsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$LocationTableTableOrderingComposer
+    extends Composer<_$Database, $LocationTableTable> {
+  $$LocationTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get address => $composableBuilder(
+      column: $table.address, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get latitude => $composableBuilder(
+      column: $table.latitude, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get longitude => $composableBuilder(
+      column: $table.longitude, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get category => $composableBuilder(
+      column: $table.category, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isFavorite => $composableBuilder(
+      column: $table.isFavorite, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  $$UserTableTableOrderingComposer get userId {
+    final $$UserTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.userTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.userTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$GroupsTableTableOrderingComposer get groupId {
+    final $$GroupsTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.groupId,
+        referencedTable: $db.groupsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GroupsTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.groupsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$LocationTableTableAnnotationComposer
+    extends Composer<_$Database, $LocationTableTable> {
+  $$LocationTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get address =>
+      $composableBuilder(column: $table.address, builder: (column) => column);
+
+  GeneratedColumn<double> get latitude =>
+      $composableBuilder(column: $table.latitude, builder: (column) => column);
+
+  GeneratedColumn<double> get longitude =>
+      $composableBuilder(column: $table.longitude, builder: (column) => column);
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<bool> get isFavorite => $composableBuilder(
+      column: $table.isFavorite, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  $$UserTableTableAnnotationComposer get userId {
+    final $$UserTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.userId,
+        referencedTable: $db.userTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$UserTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.userTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$GroupsTableTableAnnotationComposer get groupId {
+    final $$GroupsTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.groupId,
+        referencedTable: $db.groupsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GroupsTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.groupsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$LocationTableTableTableManager extends RootTableManager<
+    _$Database,
+    $LocationTableTable,
+    LocationTableData,
+    $$LocationTableTableFilterComposer,
+    $$LocationTableTableOrderingComposer,
+    $$LocationTableTableAnnotationComposer,
+    $$LocationTableTableCreateCompanionBuilder,
+    $$LocationTableTableUpdateCompanionBuilder,
+    (LocationTableData, $$LocationTableTableReferences),
+    LocationTableData,
+    PrefetchHooks Function({bool userId, bool groupId})> {
+  $$LocationTableTableTableManager(_$Database db, $LocationTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$LocationTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$LocationTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$LocationTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> userId = const Value.absent(),
+            Value<String?> groupId = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> address = const Value.absent(),
+            Value<double> latitude = const Value.absent(),
+            Value<double> longitude = const Value.absent(),
+            Value<String?> category = const Value.absent(),
+            Value<bool> isFavorite = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+          }) =>
+              LocationTableCompanion(
+            id: id,
+            userId: userId,
+            groupId: groupId,
+            name: name,
+            address: address,
+            latitude: latitude,
+            longitude: longitude,
+            category: category,
+            isFavorite: isFavorite,
+            notes: notes,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String?> userId = const Value.absent(),
+            Value<String?> groupId = const Value.absent(),
+            required String name,
+            required String address,
+            required double latitude,
+            required double longitude,
+            Value<String?> category = const Value.absent(),
+            Value<bool> isFavorite = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+          }) =>
+              LocationTableCompanion.insert(
+            id: id,
+            userId: userId,
+            groupId: groupId,
+            name: name,
+            address: address,
+            latitude: latitude,
+            longitude: longitude,
+            category: category,
+            isFavorite: isFavorite,
+            notes: notes,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$LocationTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({userId = false, groupId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (userId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.userId,
+                    referencedTable:
+                        $$LocationTableTableReferences._userIdTable(db),
+                    referencedColumn:
+                        $$LocationTableTableReferences._userIdTable(db).id,
+                  ) as T;
+                }
+                if (groupId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.groupId,
+                    referencedTable:
+                        $$LocationTableTableReferences._groupIdTable(db),
+                    referencedColumn:
+                        $$LocationTableTableReferences._groupIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$LocationTableTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $LocationTableTable,
+    LocationTableData,
+    $$LocationTableTableFilterComposer,
+    $$LocationTableTableOrderingComposer,
+    $$LocationTableTableAnnotationComposer,
+    $$LocationTableTableCreateCompanionBuilder,
+    $$LocationTableTableUpdateCompanionBuilder,
+    (LocationTableData, $$LocationTableTableReferences),
+    LocationTableData,
+    PrefetchHooks Function({bool userId, bool groupId})>;
 
 class $DatabaseManager {
   final _$Database _db;
@@ -9878,4 +11157,6 @@ class $DatabaseManager {
       $$GoTasksTableTableTableManager(_db, _db.goTasksTable);
   $$GoRemindersTableTableTableManager get goRemindersTable =>
       $$GoRemindersTableTableTableManager(_db, _db.goRemindersTable);
+  $$LocationTableTableTableManager get locationTable =>
+      $$LocationTableTableTableManager(_db, _db.locationTable);
 }

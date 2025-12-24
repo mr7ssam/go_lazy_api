@@ -7,4 +7,10 @@ abstract class IGoEventsRepo {
   Future<List<GoEvent>> getUserEvents(String userId);
   Future<List<GoEvent>> getGroupEvents(String groupId);
   Future<void> deleteEvent(String id);
+  Future<List<GoEvent>> getPublicEvents({
+    DateTime? startDate,
+    DateTime? endDate,
+    int limit = 20,
+    int offset = 0,
+  });
 }

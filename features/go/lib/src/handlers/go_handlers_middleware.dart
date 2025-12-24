@@ -112,6 +112,14 @@ extension HandlerUse on Handler {
               localizationService: context.read<LocalizationService>(),
             ),
           ),
+        )
+        .use(
+          provider<GetEventFeedHandler>(
+            (context) => GetEventFeedHandler(
+              goEventsRepo: context.read<IGoEventsRepo>(),
+              localizationService: context.read<LocalizationService>(),
+            ),
+          ),
         );
   }
 }

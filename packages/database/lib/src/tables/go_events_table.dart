@@ -1,5 +1,6 @@
 import 'package:database/src/tables/index.dart';
 import 'package:drift/drift.dart';
+import 'package:go/go_domain.dart';
 import 'package:uuid/uuid.dart';
 
 class GoEventsTable extends Table {
@@ -29,6 +30,9 @@ class GoEventsTable extends Table {
 
   BoolColumn get isActive =>
       boolean().customConstraint('NOT NULL DEFAULT true')();
+
+  TextColumn get visibility =>
+      textEnum<GoVisibilityEnum>().withDefault(const Constant('public'))();
 
   @override
   Set<Column> get primaryKey => {id};

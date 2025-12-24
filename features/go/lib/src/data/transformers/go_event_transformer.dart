@@ -17,6 +17,7 @@ class GoEventInputTransformer {
       createdAt: Value(event.createdAt),
       updatedAt: Value(event.updatedAt),
       isActive: Value(event.isActive),
+      visibility: Value(event.visibility),
     );
   }
 }
@@ -36,6 +37,7 @@ class GoEventOutputTransformer {
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
       isActive: data.isActive,
+      visibility: data.visibility,
     );
   }
 }

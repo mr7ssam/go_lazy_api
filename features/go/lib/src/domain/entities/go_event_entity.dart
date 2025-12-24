@@ -1,3 +1,4 @@
+import 'package:go/go_domain.dart';
 import 'package:uuid/uuid.dart';
 
 class GoEvent {
@@ -8,6 +9,7 @@ class GoEvent {
     required this.createdAt,
     required this.startDate,
     required this.isActive,
+    required this.visibility,
     this.description,
     this.locationId,
     this.endDate,
@@ -25,6 +27,7 @@ class GoEvent {
     DateTime? endDate,
     String? groupId,
     String? coverImageUrl,
+    GoVisibilityEnum visibility = GoVisibilityEnum.public,
   }) {
     return GoEvent(
       id: const Uuid().v4(),
@@ -38,6 +41,7 @@ class GoEvent {
       createdBy: createdBy,
       createdAt: DateTime.now().toUtc(),
       isActive: true,
+      visibility: visibility,
     );
   }
 
@@ -53,6 +57,7 @@ class GoEvent {
   final DateTime createdAt;
   final DateTime? updatedAt;
   final bool isActive;
+  final GoVisibilityEnum visibility;
 
   GoEvent copyWith({
     String? id,
@@ -67,6 +72,7 @@ class GoEvent {
     DateTime? createdAt,
     DateTime? updatedAt,
     bool? isActive,
+    GoVisibilityEnum? visibility,
   }) {
     return GoEvent(
       id: id ?? this.id,
@@ -81,6 +87,7 @@ class GoEvent {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       isActive: isActive ?? this.isActive,
+      visibility: visibility ?? this.visibility,
     );
   }
 }

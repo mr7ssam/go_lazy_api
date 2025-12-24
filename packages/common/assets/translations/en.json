@@ -18,8 +18,14 @@
       "goTaskNotFound": "Task not found",
       "goTaskNotAssignedToYou": "This task is not assigned to you",
       "goReminderCreated": "Reminder set",
+      "locationNameAlreadyExists": "A location with this name already exists",
       "goReminderUpdated": "Reminder updated",
       "goReminderDeleted": "Reminder deleted",
       "goReminderNotFound": "Reminder not found",
-      "goEventNotFound": "Event not found"
+      "goEventNotFound": "Event not found",
+      "goLocationSaved": "Location saved successfully",
+      "goLocationUpdated": "Location updated successfully",
+      "goLocationDeleted": "Location deleted successfully",
+      "goLocationNotFound": "Location not found",
+      "goLocationNameExists": "A location with this name already exists"
 }

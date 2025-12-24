@@ -82,4 +82,34 @@ class GoEventsRepo implements IGoEventsRepo {
           ..where((tbl) => tbl.id.equals(id)))
         .write(const GoEventsTableCompanion(isActive: Value(false)));
   }
+
+  @override
+  Future<List<GoEvent>> getPublicEvents({
+    DateTime? startDate,
+    DateTime? endDate,
+    int limit = 20,
+    int offset = 0,
+  }) async {
+    final now = DateTime.now().toUtc();
+
+    final query = _goDao.select(_goDao.goEventsTable)
+      ..where(
+        (tbl) =>
+            tbl.visibility.equalsValue(GoVisibilityEnum.public) &
+            tbl.isActive.equals(true) &
+            tbl.startDate.isBiggerOrEqualValue(startDate ?? now),
+      )
+      ..orderBy([(t) => OrderingTerm.asc(t.startDate)])
+      ..limit(limit, offset: offset);
+
+    if (endDate != null) {
+      query.where(
+        (tbl) => tbl.startDate.isSmallerOrEqualValue(endDate),
+      );
+    }
+
+    final results = await query.get();
+
+    return results.map(GoEventOutputTransformer.transform).toList();
+  }
 }

@@ -7,6 +7,7 @@
 <module fileurl="file://$PROJECT_DIR$/features/go/melos_go.iml" filepath="$PROJECT_DIR$/features/go/melos_go.iml"/>
 <module fileurl="file://$PROJECT_DIR$/melos_go_lazy_api.iml" filepath="$PROJECT_DIR$/melos_go_lazy_api.iml"/>
 <module fileurl="file://$PROJECT_DIR$/features/group/melos_group.iml" filepath="$PROJECT_DIR$/features/group/melos_group.iml"/>
+<module fileurl="file://$PROJECT_DIR$/features/location/melos_location.iml" filepath="$PROJECT_DIR$/features/location/melos_location.iml"/>
 <module fileurl="file://$PROJECT_DIR$/features/user/melos_user.iml" filepath="$PROJECT_DIR$/features/user/melos_user.iml"/>
 <module fileurl="file://$PROJECT_DIR$/melos_go_lazy_api.iml" filepath="$PROJECT_DIR$/melos_go_lazy_api.iml"/>
     </modules>

@@ -16,10 +16,16 @@
       "must_be_participant_to_view": "يجب أن تكون مشاركاً لعرض المهام",
       "cannot_make_shared_task_private": "لا يمكن جعل المهمة المشتركة خاصة بعد مشاركتها مع المشاركين",
       "goTaskNotFound": "المهمة غير موجودة",
-      "goTaskNotAssignedToYou": "هذه المهمة غير مخصصة لك",
+      "goTaskNotAssignedToYou": "هذه المهمة غير مسندة إليك",
       "goReminderCreated": "تم تعيين التذكير",
+      "locationNameAlreadyExists": "يوجد موقع بهذا الاسم بالفعل",
       "goReminderUpdated": "تم تحديث التذكير",
       "goReminderDeleted": "تم حذف التذكير",
       "goReminderNotFound": "التذكير غير موجود",
-      "goEventNotFound": "الحدث غير موجود"
+      "goEventNotFound": "الحدث غير موجود",
+      "goLocationSaved": "تم حفظ الموقع بنجاح",
+      "goLocationUpdated": "تم تحديث الموقع بنجاح",
+      "goLocationDeleted": "تم حذف الموقع بنجاح",
+      "goLocationNotFound": "الموقع غير موجود",
+      "goLocationNameExists": "يوجد موقع بهذا الاسم بالفعل"
 }

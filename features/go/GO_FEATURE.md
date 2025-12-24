@@ -684,35 +684,51 @@ GoEvent ──┬── has many ──> GoParticipant
 - [ ] Create routes
 - [ ] Write unit tests
 
-### Phase 6: Discovery & Feed 🌍
-> Find public events
+### Phase 6: Discovery & Feed ✅
+> Find public events (MVP: public events only)
 
-- [ ] Implement visibility filtering logic
-- [ ] Create `GetEventFeedHandler`
-  - Filter by visibility (public/friends/group)
-  - Filter by location (nearby)
+- [x] Add visibility enum and column to events
+- [x] Implement visibility filtering logic
+- [x] Create `GetEventFeedHandler`
+  - Filter by visibility (public only for MVP)
   - Filter by date range
   - Pagination
-- [ ] Create route
+- [x] Create route
 - [ ] Write unit tests
+- [ ] (Future) Add friends and group visibility filtering
+- [ ] (Future) Add location-based filtering
 
 ### Phase 7: Saved Locations 📍
 
-> Reusable locations for quick event creation
+> ✅ **COMPLETED** - Reusable locations for quick event creation
 
-- [ ] Add `go_saved_locations` table to database
-- [ ] Create `GoSavedLocation` entity
-- [ ] Create `IGoSavedLocationsRepo` interface
-- [ ] Implement `GoSavedLocationsRepo`
-- [ ] Implement `GoSavedLocationsDao`
-- [ ] Create handlers:
-  - [ ] `CreateSavedLocationHandler` (user-level)
-  - [ ] `GetSavedLocationsHandler` (list with filters)
-  - [ ] `UpdateSavedLocationHandler`
-  - [ ] `DeleteSavedLocationHandler`
-- [ ] Add group-level saved locations (extend group feature)
-- [ ] Create routes
-- [ ] Write unit tests
+- [x] Add `go_saved_locations` table to database
+- [x] Create `GoSavedLocation` entity
+- [x] Create `IGoSavedLocationsRepo` interface
+- [x] Implement `GoSavedLocationsRepo`
+- [x] Update `GoDao` to include saved locations table
+- [x] Create handlers:
+  - [x] `CreateSavedLocationHandler` (user-level & group-level)
+  - [x] `GetSavedLocationsHandler` (list with filters: category, favoritesOnly)
+  - [x] `UpdateSavedLocationHandler`
+  - [x] `DeleteSavedLocationHandler`
+- [x] Add group-level saved locations support
+- [x] Create routes:
+  - [x] `/go/locations` (GET/POST user-level)
+  - [x] `/go/locations/[locationId]` (PATCH/DELETE)
+  - [x] `/groups/[id]/locations` (GET/POST group-level)
+  - [x] `/groups/[id]/locations/[locationId]` (PATCH/DELETE)
+- [x] Add localization keys (goLocationSaved, goLocationUpdated, goLocationDeleted, etc.)
+- [x] Run build_runner to generate Drift code
+
+**Implementation Notes:**
+- Category is flexible string field (not enum) allowing users to define their own categories
+- CHECK constraint ensures location belongs to either user OR group (not both)
+- Supports filtering by category and favorites
+- Ordering: favorites first, then by creation date DESC
+- Unique constraint on (user_id, name) and (group_id, name)
+- Group members can create/view locations; only owners can delete
+
 
 ### Phase 8: Recurring Events 🔄
 

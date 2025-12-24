@@ -24,8 +24,9 @@ part 'database.g.dart';
     GoParticipantsTable,
     GoRemindersTable,
     GoTasksTable,
+    LocationTable,
   ],
-  daos: [UsersDao, GroupsDao, GoDao],
+  daos: [UsersDao, GroupsDao, GoDao, LocationDao],
 )
 class Database extends _$Database {
   Database([QueryExecutor? executor]) : super(executor ?? _openConnection());
@@ -66,6 +67,9 @@ extension DatabaseUse on Handler {
         )
         .use(
           GroupsDao.middlewareProvider(),
+        )
+        .use(
+          LocationDao.middlewareProvider(),
         )
         .use(
           Database.middlewareProvider(),
