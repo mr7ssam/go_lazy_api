@@ -120,6 +120,35 @@ extension HandlerUse on Handler {
               localizationService: context.read<LocalizationService>(),
             ),
           ),
+        )
+        .use(
+          provider<CreateRecurrenceHandler>(
+            (context) => CreateRecurrenceHandler(
+              recurrenceRepo: context.read<IGoRecurrenceRepo>(),
+              eventsRepo: context.read<IGoEventsRepo>(),
+            ),
+          ),
+        )
+        .use(
+          provider<GetRecurrenceHandler>(
+            (context) => GetRecurrenceHandler(
+              recurrenceRepo: context.read<IGoRecurrenceRepo>(),
+            ),
+          ),
+        )
+        .use(
+          provider<UpdateRecurrenceHandler>(
+            (context) => UpdateRecurrenceHandler(
+              recurrenceRepo: context.read<IGoRecurrenceRepo>(),
+            ),
+          ),
+        )
+        .use(
+          provider<DeleteRecurrenceHandler>(
+            (context) => DeleteRecurrenceHandler(
+              recurrenceRepo: context.read<IGoRecurrenceRepo>(),
+            ),
+          ),
         );
   }
 }

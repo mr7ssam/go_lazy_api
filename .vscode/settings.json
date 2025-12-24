@@ -1,8 +1,8 @@
 {
-      "cSpell.words": [
-        "dotenv",
-        "otps"
-      ],
+  "cSpell.words": [
+    "dotenv",
+    "otps"
+  ],
   "[dart]": {
     "editor.codeActionsOnSave": {
       "source.fixAll": "explicit",
@@ -10,17 +10,5 @@
     },
     "editor.defaultFormatter": "Dart-Code.dart-code"
   },
-  "github.copilot.chat.mcp.enabled": true,
-  "github.copilot.chat.mcp.servers": {
-    "dart-sdk-mcp": {
-      "command": "dart",
-      "args": [
-        "run",
-        "mcp_server"
-      ],
-      "env": {
-        "DART_SDK_MCP_AUTO_LAUNCH_FLUTTER_APPS": "false"
-      }
-    }
-  }
-}     
+  "editor.formatOnSave": true
+}

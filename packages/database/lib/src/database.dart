@@ -22,6 +22,7 @@ part 'database.g.dart';
     GoLocationsTable,
     GoEventsTable,
     GoParticipantsTable,
+    GoRecurrenceRulesTable,
     GoRemindersTable,
     GoTasksTable,
     LocationTable,

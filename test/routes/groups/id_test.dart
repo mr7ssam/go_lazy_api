@@ -8,7 +8,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 import 'package:user/user_domain.dart';
 
-import '../../../routes/groups/[id].dart' as route;
+import '../../../routes/groups/[id]/index.dart' as route;
 
 class _MockRequestContext extends Mock implements RequestContext {}
 

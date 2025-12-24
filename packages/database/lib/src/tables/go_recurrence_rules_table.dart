@@ -10,8 +10,7 @@ class GoRecurrenceRulesTable extends Table {
 
   TextColumn get frequency => text().customConstraint('NOT NULL')();
 
-  IntColumn get interval =>
-      integer().customConstraint('NOT NULL DEFAULT 1')();
+  IntColumn get interval => integer().customConstraint('NOT NULL DEFAULT 1')();
 
   TextColumn? get daysOfWeek => text().nullable()();
 
@@ -27,7 +26,8 @@ class GoRecurrenceRulesTable extends Table {
 
   DateTimeColumn? get endUntilDate => dateTime().nullable()();
 
-  TextColumn get taskMode => text().customConstraint('NOT NULL DEFAULT \'copy\'')();
+  TextColumn get taskMode =>
+      text().customConstraint("NOT NULL DEFAULT 'copy'")();
 
   DateTimeColumn get createdAt =>
       dateTime().clientDefault(DateTime.now().toUtc)();

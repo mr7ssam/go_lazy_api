@@ -42,6 +42,13 @@ extension HandlerUse on Handler {
               goDao: context.read<GoDao>(),
             ),
           ),
+        )
+        .use(
+          provider<IGoRecurrenceRepo>(
+            (context) => GoRecurrenceRepo(
+              goDao: context.read<GoDao>(),
+            ),
+          ),
         );
   }
 }

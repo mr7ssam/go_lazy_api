@@ -3607,6 +3607,718 @@ class GoParticipantsTableCompanion
   }
 }
 
+class $GoRecurrenceRulesTableTable extends GoRecurrenceRulesTable
+    with TableInfo<$GoRecurrenceRulesTableTable, GoRecurrenceRulesTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GoRecurrenceRulesTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      clientDefault: const Uuid().v4);
+  static const VerificationMeta _eventIdMeta =
+      const VerificationMeta('eventId');
+  @override
+  late final GeneratedColumn<String> eventId = GeneratedColumn<String>(
+      'event_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES go_events (id) ON DELETE CASCADE'));
+  static const VerificationMeta _frequencyMeta =
+      const VerificationMeta('frequency');
+  @override
+  late final GeneratedColumn<String> frequency = GeneratedColumn<String>(
+      'frequency', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  static const VerificationMeta _intervalMeta =
+      const VerificationMeta('interval');
+  @override
+  late final GeneratedColumn<int> interval = GeneratedColumn<int>(
+      'interval', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL DEFAULT 1',
+      defaultValue: const CustomExpression('1'));
+  static const VerificationMeta _daysOfWeekMeta =
+      const VerificationMeta('daysOfWeek');
+  @override
+  late final GeneratedColumn<String> daysOfWeek = GeneratedColumn<String>(
+      'days_of_week', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _dayOfMonthMeta =
+      const VerificationMeta('dayOfMonth');
+  @override
+  late final GeneratedColumn<int> dayOfMonth = GeneratedColumn<int>(
+      'day_of_month', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _weekOfMonthMeta =
+      const VerificationMeta('weekOfMonth');
+  @override
+  late final GeneratedColumn<int> weekOfMonth = GeneratedColumn<int>(
+      'week_of_month', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _dayOfWeekInMonthMeta =
+      const VerificationMeta('dayOfWeekInMonth');
+  @override
+  late final GeneratedColumn<String> dayOfWeekInMonth = GeneratedColumn<String>(
+      'day_of_week_in_month', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _endTypeMeta =
+      const VerificationMeta('endType');
+  @override
+  late final GeneratedColumn<String> endType = GeneratedColumn<String>(
+      'end_type', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL');
+  static const VerificationMeta _endAfterCountMeta =
+      const VerificationMeta('endAfterCount');
+  @override
+  late final GeneratedColumn<int> endAfterCount = GeneratedColumn<int>(
+      'end_after_count', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _endUntilDateMeta =
+      const VerificationMeta('endUntilDate');
+  @override
+  late final GeneratedColumn<DateTime> endUntilDate = GeneratedColumn<DateTime>(
+      'end_until_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _taskModeMeta =
+      const VerificationMeta('taskMode');
+  @override
+  late final GeneratedColumn<String> taskMode = GeneratedColumn<String>(
+      'task_mode', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      $customConstraints: 'NOT NULL DEFAULT \'copy\'',
+      defaultValue: const CustomExpression('\'copy\''));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      clientDefault: DateTime.now().toUtc);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        eventId,
+        frequency,
+        interval,
+        daysOfWeek,
+        dayOfMonth,
+        weekOfMonth,
+        dayOfWeekInMonth,
+        endType,
+        endAfterCount,
+        endUntilDate,
+        taskMode,
+        createdAt,
+        updatedAt
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'go_recurrence_rules';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<GoRecurrenceRulesTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('event_id')) {
+      context.handle(_eventIdMeta,
+          eventId.isAcceptableOrUnknown(data['event_id']!, _eventIdMeta));
+    } else if (isInserting) {
+      context.missing(_eventIdMeta);
+    }
+    if (data.containsKey('frequency')) {
+      context.handle(_frequencyMeta,
+          frequency.isAcceptableOrUnknown(data['frequency']!, _frequencyMeta));
+    } else if (isInserting) {
+      context.missing(_frequencyMeta);
+    }
+    if (data.containsKey('interval')) {
+      context.handle(_intervalMeta,
+          interval.isAcceptableOrUnknown(data['interval']!, _intervalMeta));
+    }
+    if (data.containsKey('days_of_week')) {
+      context.handle(
+          _daysOfWeekMeta,
+          daysOfWeek.isAcceptableOrUnknown(
+              data['days_of_week']!, _daysOfWeekMeta));
+    }
+    if (data.containsKey('day_of_month')) {
+      context.handle(
+          _dayOfMonthMeta,
+          dayOfMonth.isAcceptableOrUnknown(
+              data['day_of_month']!, _dayOfMonthMeta));
+    }
+    if (data.containsKey('week_of_month')) {
+      context.handle(
+          _weekOfMonthMeta,
+          weekOfMonth.isAcceptableOrUnknown(
+              data['week_of_month']!, _weekOfMonthMeta));
+    }
+    if (data.containsKey('day_of_week_in_month')) {
+      context.handle(
+          _dayOfWeekInMonthMeta,
+          dayOfWeekInMonth.isAcceptableOrUnknown(
+              data['day_of_week_in_month']!, _dayOfWeekInMonthMeta));
+    }
+    if (data.containsKey('end_type')) {
+      context.handle(_endTypeMeta,
+          endType.isAcceptableOrUnknown(data['end_type']!, _endTypeMeta));
+    } else if (isInserting) {
+      context.missing(_endTypeMeta);
+    }
+    if (data.containsKey('end_after_count')) {
+      context.handle(
+          _endAfterCountMeta,
+          endAfterCount.isAcceptableOrUnknown(
+              data['end_after_count']!, _endAfterCountMeta));
+    }
+    if (data.containsKey('end_until_date')) {
+      context.handle(
+          _endUntilDateMeta,
+          endUntilDate.isAcceptableOrUnknown(
+              data['end_until_date']!, _endUntilDateMeta));
+    }
+    if (data.containsKey('task_mode')) {
+      context.handle(_taskModeMeta,
+          taskMode.isAcceptableOrUnknown(data['task_mode']!, _taskModeMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  GoRecurrenceRulesTableData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GoRecurrenceRulesTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      eventId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}event_id'])!,
+      frequency: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}frequency'])!,
+      interval: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}interval'])!,
+      daysOfWeek: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}days_of_week']),
+      dayOfMonth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}day_of_month']),
+      weekOfMonth: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}week_of_month']),
+      dayOfWeekInMonth: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}day_of_week_in_month']),
+      endType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}end_type'])!,
+      endAfterCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}end_after_count']),
+      endUntilDate: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}end_until_date']),
+      taskMode: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}task_mode'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
+    );
+  }
+
+  @override
+  $GoRecurrenceRulesTableTable createAlias(String alias) {
+    return $GoRecurrenceRulesTableTable(attachedDatabase, alias);
+  }
+}
+
+class GoRecurrenceRulesTableData extends DataClass
+    implements Insertable<GoRecurrenceRulesTableData> {
+  final String id;
+  final String eventId;
+  final String frequency;
+  final int interval;
+  final String? daysOfWeek;
+  final int? dayOfMonth;
+  final int? weekOfMonth;
+  final String? dayOfWeekInMonth;
+  final String endType;
+  final int? endAfterCount;
+  final DateTime? endUntilDate;
+  final String taskMode;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+  const GoRecurrenceRulesTableData(
+      {required this.id,
+      required this.eventId,
+      required this.frequency,
+      required this.interval,
+      this.daysOfWeek,
+      this.dayOfMonth,
+      this.weekOfMonth,
+      this.dayOfWeekInMonth,
+      required this.endType,
+      this.endAfterCount,
+      this.endUntilDate,
+      required this.taskMode,
+      required this.createdAt,
+      this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['event_id'] = Variable<String>(eventId);
+    map['frequency'] = Variable<String>(frequency);
+    map['interval'] = Variable<int>(interval);
+    if (!nullToAbsent || daysOfWeek != null) {
+      map['days_of_week'] = Variable<String>(daysOfWeek);
+    }
+    if (!nullToAbsent || dayOfMonth != null) {
+      map['day_of_month'] = Variable<int>(dayOfMonth);
+    }
+    if (!nullToAbsent || weekOfMonth != null) {
+      map['week_of_month'] = Variable<int>(weekOfMonth);
+    }
+    if (!nullToAbsent || dayOfWeekInMonth != null) {
+      map['day_of_week_in_month'] = Variable<String>(dayOfWeekInMonth);
+    }
+    map['end_type'] = Variable<String>(endType);
+    if (!nullToAbsent || endAfterCount != null) {
+      map['end_after_count'] = Variable<int>(endAfterCount);
+    }
+    if (!nullToAbsent || endUntilDate != null) {
+      map['end_until_date'] = Variable<DateTime>(endUntilDate);
+    }
+    map['task_mode'] = Variable<String>(taskMode);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  GoRecurrenceRulesTableCompanion toCompanion(bool nullToAbsent) {
+    return GoRecurrenceRulesTableCompanion(
+      id: Value(id),
+      eventId: Value(eventId),
+      frequency: Value(frequency),
+      interval: Value(interval),
+      daysOfWeek: daysOfWeek == null && nullToAbsent
+          ? const Value.absent()
+          : Value(daysOfWeek),
+      dayOfMonth: dayOfMonth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dayOfMonth),
+      weekOfMonth: weekOfMonth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(weekOfMonth),
+      dayOfWeekInMonth: dayOfWeekInMonth == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dayOfWeekInMonth),
+      endType: Value(endType),
+      endAfterCount: endAfterCount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endAfterCount),
+      endUntilDate: endUntilDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endUntilDate),
+      taskMode: Value(taskMode),
+      createdAt: Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  factory GoRecurrenceRulesTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GoRecurrenceRulesTableData(
+      id: serializer.fromJson<String>(json['id']),
+      eventId: serializer.fromJson<String>(json['eventId']),
+      frequency: serializer.fromJson<String>(json['frequency']),
+      interval: serializer.fromJson<int>(json['interval']),
+      daysOfWeek: serializer.fromJson<String?>(json['daysOfWeek']),
+      dayOfMonth: serializer.fromJson<int?>(json['dayOfMonth']),
+      weekOfMonth: serializer.fromJson<int?>(json['weekOfMonth']),
+      dayOfWeekInMonth: serializer.fromJson<String?>(json['dayOfWeekInMonth']),
+      endType: serializer.fromJson<String>(json['endType']),
+      endAfterCount: serializer.fromJson<int?>(json['endAfterCount']),
+      endUntilDate: serializer.fromJson<DateTime?>(json['endUntilDate']),
+      taskMode: serializer.fromJson<String>(json['taskMode']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'eventId': serializer.toJson<String>(eventId),
+      'frequency': serializer.toJson<String>(frequency),
+      'interval': serializer.toJson<int>(interval),
+      'daysOfWeek': serializer.toJson<String?>(daysOfWeek),
+      'dayOfMonth': serializer.toJson<int?>(dayOfMonth),
+      'weekOfMonth': serializer.toJson<int?>(weekOfMonth),
+      'dayOfWeekInMonth': serializer.toJson<String?>(dayOfWeekInMonth),
+      'endType': serializer.toJson<String>(endType),
+      'endAfterCount': serializer.toJson<int?>(endAfterCount),
+      'endUntilDate': serializer.toJson<DateTime?>(endUntilDate),
+      'taskMode': serializer.toJson<String>(taskMode),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+    };
+  }
+
+  GoRecurrenceRulesTableData copyWith(
+          {String? id,
+          String? eventId,
+          String? frequency,
+          int? interval,
+          Value<String?> daysOfWeek = const Value.absent(),
+          Value<int?> dayOfMonth = const Value.absent(),
+          Value<int?> weekOfMonth = const Value.absent(),
+          Value<String?> dayOfWeekInMonth = const Value.absent(),
+          String? endType,
+          Value<int?> endAfterCount = const Value.absent(),
+          Value<DateTime?> endUntilDate = const Value.absent(),
+          String? taskMode,
+          DateTime? createdAt,
+          Value<DateTime?> updatedAt = const Value.absent()}) =>
+      GoRecurrenceRulesTableData(
+        id: id ?? this.id,
+        eventId: eventId ?? this.eventId,
+        frequency: frequency ?? this.frequency,
+        interval: interval ?? this.interval,
+        daysOfWeek: daysOfWeek.present ? daysOfWeek.value : this.daysOfWeek,
+        dayOfMonth: dayOfMonth.present ? dayOfMonth.value : this.dayOfMonth,
+        weekOfMonth: weekOfMonth.present ? weekOfMonth.value : this.weekOfMonth,
+        dayOfWeekInMonth: dayOfWeekInMonth.present
+            ? dayOfWeekInMonth.value
+            : this.dayOfWeekInMonth,
+        endType: endType ?? this.endType,
+        endAfterCount:
+            endAfterCount.present ? endAfterCount.value : this.endAfterCount,
+        endUntilDate:
+            endUntilDate.present ? endUntilDate.value : this.endUntilDate,
+        taskMode: taskMode ?? this.taskMode,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+      );
+  GoRecurrenceRulesTableData copyWithCompanion(
+      GoRecurrenceRulesTableCompanion data) {
+    return GoRecurrenceRulesTableData(
+      id: data.id.present ? data.id.value : this.id,
+      eventId: data.eventId.present ? data.eventId.value : this.eventId,
+      frequency: data.frequency.present ? data.frequency.value : this.frequency,
+      interval: data.interval.present ? data.interval.value : this.interval,
+      daysOfWeek:
+          data.daysOfWeek.present ? data.daysOfWeek.value : this.daysOfWeek,
+      dayOfMonth:
+          data.dayOfMonth.present ? data.dayOfMonth.value : this.dayOfMonth,
+      weekOfMonth:
+          data.weekOfMonth.present ? data.weekOfMonth.value : this.weekOfMonth,
+      dayOfWeekInMonth: data.dayOfWeekInMonth.present
+          ? data.dayOfWeekInMonth.value
+          : this.dayOfWeekInMonth,
+      endType: data.endType.present ? data.endType.value : this.endType,
+      endAfterCount: data.endAfterCount.present
+          ? data.endAfterCount.value
+          : this.endAfterCount,
+      endUntilDate: data.endUntilDate.present
+          ? data.endUntilDate.value
+          : this.endUntilDate,
+      taskMode: data.taskMode.present ? data.taskMode.value : this.taskMode,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GoRecurrenceRulesTableData(')
+          ..write('id: $id, ')
+          ..write('eventId: $eventId, ')
+          ..write('frequency: $frequency, ')
+          ..write('interval: $interval, ')
+          ..write('daysOfWeek: $daysOfWeek, ')
+          ..write('dayOfMonth: $dayOfMonth, ')
+          ..write('weekOfMonth: $weekOfMonth, ')
+          ..write('dayOfWeekInMonth: $dayOfWeekInMonth, ')
+          ..write('endType: $endType, ')
+          ..write('endAfterCount: $endAfterCount, ')
+          ..write('endUntilDate: $endUntilDate, ')
+          ..write('taskMode: $taskMode, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id,
+      eventId,
+      frequency,
+      interval,
+      daysOfWeek,
+      dayOfMonth,
+      weekOfMonth,
+      dayOfWeekInMonth,
+      endType,
+      endAfterCount,
+      endUntilDate,
+      taskMode,
+      createdAt,
+      updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GoRecurrenceRulesTableData &&
+          other.id == this.id &&
+          other.eventId == this.eventId &&
+          other.frequency == this.frequency &&
+          other.interval == this.interval &&
+          other.daysOfWeek == this.daysOfWeek &&
+          other.dayOfMonth == this.dayOfMonth &&
+          other.weekOfMonth == this.weekOfMonth &&
+          other.dayOfWeekInMonth == this.dayOfWeekInMonth &&
+          other.endType == this.endType &&
+          other.endAfterCount == this.endAfterCount &&
+          other.endUntilDate == this.endUntilDate &&
+          other.taskMode == this.taskMode &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class GoRecurrenceRulesTableCompanion
+    extends UpdateCompanion<GoRecurrenceRulesTableData> {
+  final Value<String> id;
+  final Value<String> eventId;
+  final Value<String> frequency;
+  final Value<int> interval;
+  final Value<String?> daysOfWeek;
+  final Value<int?> dayOfMonth;
+  final Value<int?> weekOfMonth;
+  final Value<String?> dayOfWeekInMonth;
+  final Value<String> endType;
+  final Value<int?> endAfterCount;
+  final Value<DateTime?> endUntilDate;
+  final Value<String> taskMode;
+  final Value<DateTime> createdAt;
+  final Value<DateTime?> updatedAt;
+  final Value<int> rowid;
+  const GoRecurrenceRulesTableCompanion({
+    this.id = const Value.absent(),
+    this.eventId = const Value.absent(),
+    this.frequency = const Value.absent(),
+    this.interval = const Value.absent(),
+    this.daysOfWeek = const Value.absent(),
+    this.dayOfMonth = const Value.absent(),
+    this.weekOfMonth = const Value.absent(),
+    this.dayOfWeekInMonth = const Value.absent(),
+    this.endType = const Value.absent(),
+    this.endAfterCount = const Value.absent(),
+    this.endUntilDate = const Value.absent(),
+    this.taskMode = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GoRecurrenceRulesTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String eventId,
+    required String frequency,
+    this.interval = const Value.absent(),
+    this.daysOfWeek = const Value.absent(),
+    this.dayOfMonth = const Value.absent(),
+    this.weekOfMonth = const Value.absent(),
+    this.dayOfWeekInMonth = const Value.absent(),
+    required String endType,
+    this.endAfterCount = const Value.absent(),
+    this.endUntilDate = const Value.absent(),
+    this.taskMode = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : eventId = Value(eventId),
+        frequency = Value(frequency),
+        endType = Value(endType);
+  static Insertable<GoRecurrenceRulesTableData> custom({
+    Expression<String>? id,
+    Expression<String>? eventId,
+    Expression<String>? frequency,
+    Expression<int>? interval,
+    Expression<String>? daysOfWeek,
+    Expression<int>? dayOfMonth,
+    Expression<int>? weekOfMonth,
+    Expression<String>? dayOfWeekInMonth,
+    Expression<String>? endType,
+    Expression<int>? endAfterCount,
+    Expression<DateTime>? endUntilDate,
+    Expression<String>? taskMode,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (eventId != null) 'event_id': eventId,
+      if (frequency != null) 'frequency': frequency,
+      if (interval != null) 'interval': interval,
+      if (daysOfWeek != null) 'days_of_week': daysOfWeek,
+      if (dayOfMonth != null) 'day_of_month': dayOfMonth,
+      if (weekOfMonth != null) 'week_of_month': weekOfMonth,
+      if (dayOfWeekInMonth != null) 'day_of_week_in_month': dayOfWeekInMonth,
+      if (endType != null) 'end_type': endType,
+      if (endAfterCount != null) 'end_after_count': endAfterCount,
+      if (endUntilDate != null) 'end_until_date': endUntilDate,
+      if (taskMode != null) 'task_mode': taskMode,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GoRecurrenceRulesTableCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? eventId,
+      Value<String>? frequency,
+      Value<int>? interval,
+      Value<String?>? daysOfWeek,
+      Value<int?>? dayOfMonth,
+      Value<int?>? weekOfMonth,
+      Value<String?>? dayOfWeekInMonth,
+      Value<String>? endType,
+      Value<int?>? endAfterCount,
+      Value<DateTime?>? endUntilDate,
+      Value<String>? taskMode,
+      Value<DateTime>? createdAt,
+      Value<DateTime?>? updatedAt,
+      Value<int>? rowid}) {
+    return GoRecurrenceRulesTableCompanion(
+      id: id ?? this.id,
+      eventId: eventId ?? this.eventId,
+      frequency: frequency ?? this.frequency,
+      interval: interval ?? this.interval,
+      daysOfWeek: daysOfWeek ?? this.daysOfWeek,
+      dayOfMonth: dayOfMonth ?? this.dayOfMonth,
+      weekOfMonth: weekOfMonth ?? this.weekOfMonth,
+      dayOfWeekInMonth: dayOfWeekInMonth ?? this.dayOfWeekInMonth,
+      endType: endType ?? this.endType,
+      endAfterCount: endAfterCount ?? this.endAfterCount,
+      endUntilDate: endUntilDate ?? this.endUntilDate,
+      taskMode: taskMode ?? this.taskMode,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (eventId.present) {
+      map['event_id'] = Variable<String>(eventId.value);
+    }
+    if (frequency.present) {
+      map['frequency'] = Variable<String>(frequency.value);
+    }
+    if (interval.present) {
+      map['interval'] = Variable<int>(interval.value);
+    }
+    if (daysOfWeek.present) {
+      map['days_of_week'] = Variable<String>(daysOfWeek.value);
+    }
+    if (dayOfMonth.present) {
+      map['day_of_month'] = Variable<int>(dayOfMonth.value);
+    }
+    if (weekOfMonth.present) {
+      map['week_of_month'] = Variable<int>(weekOfMonth.value);
+    }
+    if (dayOfWeekInMonth.present) {
+      map['day_of_week_in_month'] = Variable<String>(dayOfWeekInMonth.value);
+    }
+    if (endType.present) {
+      map['end_type'] = Variable<String>(endType.value);
+    }
+    if (endAfterCount.present) {
+      map['end_after_count'] = Variable<int>(endAfterCount.value);
+    }
+    if (endUntilDate.present) {
+      map['end_until_date'] = Variable<DateTime>(endUntilDate.value);
+    }
+    if (taskMode.present) {
+      map['task_mode'] = Variable<String>(taskMode.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GoRecurrenceRulesTableCompanion(')
+          ..write('id: $id, ')
+          ..write('eventId: $eventId, ')
+          ..write('frequency: $frequency, ')
+          ..write('interval: $interval, ')
+          ..write('daysOfWeek: $daysOfWeek, ')
+          ..write('dayOfMonth: $dayOfMonth, ')
+          ..write('weekOfMonth: $weekOfMonth, ')
+          ..write('dayOfWeekInMonth: $dayOfWeekInMonth, ')
+          ..write('endType: $endType, ')
+          ..write('endAfterCount: $endAfterCount, ')
+          ..write('endUntilDate: $endUntilDate, ')
+          ..write('taskMode: $taskMode, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $GoTasksTableTable extends GoTasksTable
     with TableInfo<$GoTasksTableTable, GoTasksTableData> {
   @override
@@ -5358,6 +6070,8 @@ abstract class _$Database extends GeneratedDatabase {
   late final $GoEventsTableTable goEventsTable = $GoEventsTableTable(this);
   late final $GoParticipantsTableTable goParticipantsTable =
       $GoParticipantsTableTable(this);
+  late final $GoRecurrenceRulesTableTable goRecurrenceRulesTable =
+      $GoRecurrenceRulesTableTable(this);
   late final $GoTasksTableTable goTasksTable = $GoTasksTableTable(this);
   late final $GoRemindersTableTable goRemindersTable =
       $GoRemindersTableTable(this);
@@ -5389,6 +6103,7 @@ abstract class _$Database extends GeneratedDatabase {
         goLocationsTable,
         goEventsTable,
         goParticipantsTable,
+        goRecurrenceRulesTable,
         goTasksTable,
         goRemindersTable,
         locationTable,
@@ -5401,6 +6116,13 @@ abstract class _$Database extends GeneratedDatabase {
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
         [
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('go_events',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('go_recurrence_rules', kind: UpdateKind.delete),
+            ],
+          ),
           WritePropagation(
             on: TableUpdateQuery.onTableName('users',
                 limitUpdateKind: UpdateKind.delete),
@@ -8454,6 +9176,25 @@ final class $$GoEventsTableTableReferences
         manager.$state.copyWith(prefetchedData: cache));
   }
 
+  static MultiTypedResultKey<$GoRecurrenceRulesTableTable,
+      List<GoRecurrenceRulesTableData>> _goRecurrenceRulesTableRefsTable(
+          _$Database db) =>
+      MultiTypedResultKey.fromTable(db.goRecurrenceRulesTable,
+          aliasName: $_aliasNameGenerator(
+              db.goEventsTable.id, db.goRecurrenceRulesTable.eventId));
+
+  $$GoRecurrenceRulesTableTableProcessedTableManager
+      get goRecurrenceRulesTableRefs {
+    final manager = $$GoRecurrenceRulesTableTableTableManager(
+            $_db, $_db.goRecurrenceRulesTable)
+        .filter((f) => f.eventId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_goRecurrenceRulesTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
   static MultiTypedResultKey<$GoTasksTableTable, List<GoTasksTableData>>
       _goTasksTableRefsTable(_$Database db) =>
           MultiTypedResultKey.fromTable(db.goTasksTable,
@@ -8589,6 +9330,29 @@ class $$GoEventsTableTableFilterComposer
               $removeJoinBuilderFromRootComposer:
                   $removeJoinBuilderFromRootComposer,
             ));
+    return f(composer);
+  }
+
+  Expression<bool> goRecurrenceRulesTableRefs(
+      Expression<bool> Function($$GoRecurrenceRulesTableTableFilterComposer f)
+          f) {
+    final $$GoRecurrenceRulesTableTableFilterComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.id,
+            referencedTable: $db.goRecurrenceRulesTable,
+            getReferencedColumn: (t) => t.eventId,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$GoRecurrenceRulesTableTableFilterComposer(
+                  $db: $db,
+                  $table: $db.goRecurrenceRulesTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
     return f(composer);
   }
 
@@ -8838,6 +9602,29 @@ class $$GoEventsTableTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> goRecurrenceRulesTableRefs<T extends Object>(
+      Expression<T> Function($$GoRecurrenceRulesTableTableAnnotationComposer a)
+          f) {
+    final $$GoRecurrenceRulesTableTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.id,
+            referencedTable: $db.goRecurrenceRulesTable,
+            getReferencedColumn: (t) => t.eventId,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$GoRecurrenceRulesTableTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.goRecurrenceRulesTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
+
   Expression<T> goTasksTableRefs<T extends Object>(
       Expression<T> Function($$GoTasksTableTableAnnotationComposer a) f) {
     final $$GoTasksTableTableAnnotationComposer composer = $composerBuilder(
@@ -8876,6 +9663,7 @@ class $$GoEventsTableTableTableManager extends RootTableManager<
         bool groupId,
         bool createdBy,
         bool goParticipantsTableRefs,
+        bool goRecurrenceRulesTableRefs,
         bool goTasksTableRefs})> {
   $$GoEventsTableTableTableManager(_$Database db, $GoEventsTableTable table)
       : super(TableManagerState(
@@ -8962,11 +9750,13 @@ class $$GoEventsTableTableTableManager extends RootTableManager<
               groupId = false,
               createdBy = false,
               goParticipantsTableRefs = false,
+              goRecurrenceRulesTableRefs = false,
               goTasksTableRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
                 if (goParticipantsTableRefs) db.goParticipantsTable,
+                if (goRecurrenceRulesTableRefs) db.goRecurrenceRulesTable,
                 if (goTasksTableRefs) db.goTasksTable
               ],
               addJoins: <
@@ -9030,6 +9820,19 @@ class $$GoEventsTableTableTableManager extends RootTableManager<
                                 referencedItems) =>
                             referencedItems.where((e) => e.eventId == item.id),
                         typedResults: items),
+                  if (goRecurrenceRulesTableRefs)
+                    await $_getPrefetchedData<GoEventsTableData,
+                            $GoEventsTableTable, GoRecurrenceRulesTableData>(
+                        currentTable: table,
+                        referencedTable: $$GoEventsTableTableReferences
+                            ._goRecurrenceRulesTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$GoEventsTableTableReferences(db, table, p0)
+                                .goRecurrenceRulesTableRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.eventId == item.id),
+                        typedResults: items),
                   if (goTasksTableRefs)
                     await $_getPrefetchedData<GoEventsTableData,
                             $GoEventsTableTable, GoTasksTableData>(
@@ -9066,6 +9869,7 @@ typedef $$GoEventsTableTableProcessedTableManager = ProcessedTableManager<
         bool groupId,
         bool createdBy,
         bool goParticipantsTableRefs,
+        bool goRecurrenceRulesTableRefs,
         bool goTasksTableRefs})>;
 typedef $$GoParticipantsTableTableCreateCompanionBuilder
     = GoParticipantsTableCompanion Function({
@@ -9551,6 +10355,427 @@ typedef $$GoParticipantsTableTableProcessedTableManager = ProcessedTableManager<
     (GoParticipantsTableData, $$GoParticipantsTableTableReferences),
     GoParticipantsTableData,
     PrefetchHooks Function({bool eventId, bool userId, bool invitedBy})>;
+typedef $$GoRecurrenceRulesTableTableCreateCompanionBuilder
+    = GoRecurrenceRulesTableCompanion Function({
+  Value<String> id,
+  required String eventId,
+  required String frequency,
+  Value<int> interval,
+  Value<String?> daysOfWeek,
+  Value<int?> dayOfMonth,
+  Value<int?> weekOfMonth,
+  Value<String?> dayOfWeekInMonth,
+  required String endType,
+  Value<int?> endAfterCount,
+  Value<DateTime?> endUntilDate,
+  Value<String> taskMode,
+  Value<DateTime> createdAt,
+  Value<DateTime?> updatedAt,
+  Value<int> rowid,
+});
+typedef $$GoRecurrenceRulesTableTableUpdateCompanionBuilder
+    = GoRecurrenceRulesTableCompanion Function({
+  Value<String> id,
+  Value<String> eventId,
+  Value<String> frequency,
+  Value<int> interval,
+  Value<String?> daysOfWeek,
+  Value<int?> dayOfMonth,
+  Value<int?> weekOfMonth,
+  Value<String?> dayOfWeekInMonth,
+  Value<String> endType,
+  Value<int?> endAfterCount,
+  Value<DateTime?> endUntilDate,
+  Value<String> taskMode,
+  Value<DateTime> createdAt,
+  Value<DateTime?> updatedAt,
+  Value<int> rowid,
+});
+
+final class $$GoRecurrenceRulesTableTableReferences extends BaseReferences<
+    _$Database, $GoRecurrenceRulesTableTable, GoRecurrenceRulesTableData> {
+  $$GoRecurrenceRulesTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $GoEventsTableTable _eventIdTable(_$Database db) =>
+      db.goEventsTable.createAlias($_aliasNameGenerator(
+          db.goRecurrenceRulesTable.eventId, db.goEventsTable.id));
+
+  $$GoEventsTableTableProcessedTableManager get eventId {
+    final $_column = $_itemColumn<String>('event_id')!;
+
+    final manager = $$GoEventsTableTableTableManager($_db, $_db.goEventsTable)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_eventIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$GoRecurrenceRulesTableTableFilterComposer
+    extends Composer<_$Database, $GoRecurrenceRulesTableTable> {
+  $$GoRecurrenceRulesTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get frequency => $composableBuilder(
+      column: $table.frequency, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get interval => $composableBuilder(
+      column: $table.interval, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get daysOfWeek => $composableBuilder(
+      column: $table.daysOfWeek, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get dayOfMonth => $composableBuilder(
+      column: $table.dayOfMonth, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get weekOfMonth => $composableBuilder(
+      column: $table.weekOfMonth, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get dayOfWeekInMonth => $composableBuilder(
+      column: $table.dayOfWeekInMonth,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get endType => $composableBuilder(
+      column: $table.endType, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get endAfterCount => $composableBuilder(
+      column: $table.endAfterCount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get endUntilDate => $composableBuilder(
+      column: $table.endUntilDate, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get taskMode => $composableBuilder(
+      column: $table.taskMode, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  $$GoEventsTableTableFilterComposer get eventId {
+    final $$GoEventsTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.eventId,
+        referencedTable: $db.goEventsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoEventsTableTableFilterComposer(
+              $db: $db,
+              $table: $db.goEventsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$GoRecurrenceRulesTableTableOrderingComposer
+    extends Composer<_$Database, $GoRecurrenceRulesTableTable> {
+  $$GoRecurrenceRulesTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get frequency => $composableBuilder(
+      column: $table.frequency, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get interval => $composableBuilder(
+      column: $table.interval, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get daysOfWeek => $composableBuilder(
+      column: $table.daysOfWeek, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get dayOfMonth => $composableBuilder(
+      column: $table.dayOfMonth, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get weekOfMonth => $composableBuilder(
+      column: $table.weekOfMonth, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get dayOfWeekInMonth => $composableBuilder(
+      column: $table.dayOfWeekInMonth,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get endType => $composableBuilder(
+      column: $table.endType, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get endAfterCount => $composableBuilder(
+      column: $table.endAfterCount,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get endUntilDate => $composableBuilder(
+      column: $table.endUntilDate,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get taskMode => $composableBuilder(
+      column: $table.taskMode, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  $$GoEventsTableTableOrderingComposer get eventId {
+    final $$GoEventsTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.eventId,
+        referencedTable: $db.goEventsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoEventsTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.goEventsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$GoRecurrenceRulesTableTableAnnotationComposer
+    extends Composer<_$Database, $GoRecurrenceRulesTableTable> {
+  $$GoRecurrenceRulesTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get frequency =>
+      $composableBuilder(column: $table.frequency, builder: (column) => column);
+
+  GeneratedColumn<int> get interval =>
+      $composableBuilder(column: $table.interval, builder: (column) => column);
+
+  GeneratedColumn<String> get daysOfWeek => $composableBuilder(
+      column: $table.daysOfWeek, builder: (column) => column);
+
+  GeneratedColumn<int> get dayOfMonth => $composableBuilder(
+      column: $table.dayOfMonth, builder: (column) => column);
+
+  GeneratedColumn<int> get weekOfMonth => $composableBuilder(
+      column: $table.weekOfMonth, builder: (column) => column);
+
+  GeneratedColumn<String> get dayOfWeekInMonth => $composableBuilder(
+      column: $table.dayOfWeekInMonth, builder: (column) => column);
+
+  GeneratedColumn<String> get endType =>
+      $composableBuilder(column: $table.endType, builder: (column) => column);
+
+  GeneratedColumn<int> get endAfterCount => $composableBuilder(
+      column: $table.endAfterCount, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get endUntilDate => $composableBuilder(
+      column: $table.endUntilDate, builder: (column) => column);
+
+  GeneratedColumn<String> get taskMode =>
+      $composableBuilder(column: $table.taskMode, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  $$GoEventsTableTableAnnotationComposer get eventId {
+    final $$GoEventsTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.eventId,
+        referencedTable: $db.goEventsTable,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$GoEventsTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.goEventsTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$GoRecurrenceRulesTableTableTableManager extends RootTableManager<
+    _$Database,
+    $GoRecurrenceRulesTableTable,
+    GoRecurrenceRulesTableData,
+    $$GoRecurrenceRulesTableTableFilterComposer,
+    $$GoRecurrenceRulesTableTableOrderingComposer,
+    $$GoRecurrenceRulesTableTableAnnotationComposer,
+    $$GoRecurrenceRulesTableTableCreateCompanionBuilder,
+    $$GoRecurrenceRulesTableTableUpdateCompanionBuilder,
+    (GoRecurrenceRulesTableData, $$GoRecurrenceRulesTableTableReferences),
+    GoRecurrenceRulesTableData,
+    PrefetchHooks Function({bool eventId})> {
+  $$GoRecurrenceRulesTableTableTableManager(
+      _$Database db, $GoRecurrenceRulesTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GoRecurrenceRulesTableTableFilterComposer(
+                  $db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GoRecurrenceRulesTableTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GoRecurrenceRulesTableTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> eventId = const Value.absent(),
+            Value<String> frequency = const Value.absent(),
+            Value<int> interval = const Value.absent(),
+            Value<String?> daysOfWeek = const Value.absent(),
+            Value<int?> dayOfMonth = const Value.absent(),
+            Value<int?> weekOfMonth = const Value.absent(),
+            Value<String?> dayOfWeekInMonth = const Value.absent(),
+            Value<String> endType = const Value.absent(),
+            Value<int?> endAfterCount = const Value.absent(),
+            Value<DateTime?> endUntilDate = const Value.absent(),
+            Value<String> taskMode = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              GoRecurrenceRulesTableCompanion(
+            id: id,
+            eventId: eventId,
+            frequency: frequency,
+            interval: interval,
+            daysOfWeek: daysOfWeek,
+            dayOfMonth: dayOfMonth,
+            weekOfMonth: weekOfMonth,
+            dayOfWeekInMonth: dayOfWeekInMonth,
+            endType: endType,
+            endAfterCount: endAfterCount,
+            endUntilDate: endUntilDate,
+            taskMode: taskMode,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            required String eventId,
+            required String frequency,
+            Value<int> interval = const Value.absent(),
+            Value<String?> daysOfWeek = const Value.absent(),
+            Value<int?> dayOfMonth = const Value.absent(),
+            Value<int?> weekOfMonth = const Value.absent(),
+            Value<String?> dayOfWeekInMonth = const Value.absent(),
+            required String endType,
+            Value<int?> endAfterCount = const Value.absent(),
+            Value<DateTime?> endUntilDate = const Value.absent(),
+            Value<String> taskMode = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              GoRecurrenceRulesTableCompanion.insert(
+            id: id,
+            eventId: eventId,
+            frequency: frequency,
+            interval: interval,
+            daysOfWeek: daysOfWeek,
+            dayOfMonth: dayOfMonth,
+            weekOfMonth: weekOfMonth,
+            dayOfWeekInMonth: dayOfWeekInMonth,
+            endType: endType,
+            endAfterCount: endAfterCount,
+            endUntilDate: endUntilDate,
+            taskMode: taskMode,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$GoRecurrenceRulesTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({eventId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (eventId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.eventId,
+                    referencedTable: $$GoRecurrenceRulesTableTableReferences
+                        ._eventIdTable(db),
+                    referencedColumn: $$GoRecurrenceRulesTableTableReferences
+                        ._eventIdTable(db)
+                        .id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$GoRecurrenceRulesTableTableProcessedTableManager
+    = ProcessedTableManager<
+        _$Database,
+        $GoRecurrenceRulesTableTable,
+        GoRecurrenceRulesTableData,
+        $$GoRecurrenceRulesTableTableFilterComposer,
+        $$GoRecurrenceRulesTableTableOrderingComposer,
+        $$GoRecurrenceRulesTableTableAnnotationComposer,
+        $$GoRecurrenceRulesTableTableCreateCompanionBuilder,
+        $$GoRecurrenceRulesTableTableUpdateCompanionBuilder,
+        (GoRecurrenceRulesTableData, $$GoRecurrenceRulesTableTableReferences),
+        GoRecurrenceRulesTableData,
+        PrefetchHooks Function({bool eventId})>;
 typedef $$GoTasksTableTableCreateCompanionBuilder = GoTasksTableCompanion
     Function({
   Value<String> id,
@@ -11153,6 +12378,9 @@ class $DatabaseManager {
       $$GoEventsTableTableTableManager(_db, _db.goEventsTable);
   $$GoParticipantsTableTableTableManager get goParticipantsTable =>
       $$GoParticipantsTableTableTableManager(_db, _db.goParticipantsTable);
+  $$GoRecurrenceRulesTableTableTableManager get goRecurrenceRulesTable =>
+      $$GoRecurrenceRulesTableTableTableManager(
+          _db, _db.goRecurrenceRulesTable);
   $$GoTasksTableTableTableManager get goTasksTable =>
       $$GoTasksTableTableTableManager(_db, _db.goTasksTable);
   $$GoRemindersTableTableTableManager get goRemindersTable =>

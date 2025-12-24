@@ -154,3 +154,32 @@ when(() => handler.handle(any())).thenAnswer(
 - **Unused imports**: Remove unused `TransactionManager` in read-only handlers
 - **Trailing commas**: Always add trailing commas to function arguments, parameters, and collections to avoid Dart Frog linter issues
 - **No code generation for DTOs**: Never use `@JsonSerializable()`, `@freezed`, or similar annotations on request/response classes. Use plain Dart classes with manual `toJson()` methods only
+
+## Code Quality Standards
+
+### CRITICAL: Always maintain zero analyzer issues before completing any task
+
+1. **Run `dart analyze` after every code change** and fix all warnings/infos immediately
+2. **Automatic fixes**: Use `dart fix --apply` to automatically resolve redundant arguments, trailing commas, and const constructors
+3. **Formatting**: Use `dart format <path> -o write` to fix line length and formatting issues
+4. **Common linter rules to follow**:
+   - `require_trailing_commas`: Add trailing commas after the last parameter/argument
+   - `avoid_redundant_argument_values`: Remove arguments that match default values
+   - `prefer_const_constructors`: Use `const` for constructors when possible
+   - `prefer_int_literals`: Use `10` instead of `10.0` for integer values
+   - `lines_longer_than_80_chars`: Break long lines (formatter handles this)
+   - `unreachable_from_main`: Remove unused mock classes and dead code
+
+5. **Test file standards**:
+   - Remove unused mock classes (e.g., `MockXxxService` if not used)
+   - Use `const` constructors for immutable test objects
+   - Avoid redundant default argument values in test builders
+   - Apply trailing commas consistently
+
+6. **Pre-completion checklist**:
+   ```bash
+   dart analyze           # Must show "No issues found!"
+   dart fix --apply       # Auto-fix code quality issues
+   dart format . -o write # Format all code
+   dart test              # All tests must pass
+   ```

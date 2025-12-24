@@ -11,6 +11,8 @@ mixin _$GoDaoMixin on DatabaseAccessor<Database> {
   $GoEventsTableTable get goEventsTable => attachedDatabase.goEventsTable;
   $GoParticipantsTableTable get goParticipantsTable =>
       attachedDatabase.goParticipantsTable;
+  $GoRecurrenceRulesTableTable get goRecurrenceRulesTable =>
+      attachedDatabase.goRecurrenceRulesTable;
   $GoTasksTableTable get goTasksTable => attachedDatabase.goTasksTable;
   $GoRemindersTableTable get goRemindersTable =>
       attachedDatabase.goRemindersTable;
